@@ -1,4 +1,4 @@
-package com.safetynet.alerts.domain;
+package com.safetynet.alerts.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
