@@ -1,4 +1,4 @@
-package com.safetynet.alerts.json;
+package com.safetynet.alerts.json.entity;
 
 
 import lombok.Getter;
