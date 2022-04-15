@@ -1,4 +1,4 @@
-package com.safetynet.alerts.json.entity;
+package com.safetynet.alerts.dal.data;
 
 public class FileConstants {
 

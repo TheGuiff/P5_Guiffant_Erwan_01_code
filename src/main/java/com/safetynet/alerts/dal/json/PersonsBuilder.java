@@ -1,8 +1,7 @@
-package com.safetynet.alerts.json;
+package com.safetynet.alerts.dal.json;
 
 import com.safetynet.alerts.domain.model.MedicalRecord;
 import com.safetynet.alerts.domain.model.Person;
-import com.safetynet.alerts.json.entity.JsonFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +27,7 @@ public class PersonsBuilder {
                             collect(Collectors.toList());
                     pOut.setBirthdate(jsonMR.get(0).getBirthdate());
                     mrOut.setAllergies(jsonMR.get(0).getAllergies());
-                    mrOut.setMedication(jsonMR.get(0).getMedications());
+                    mrOut.setMedications(jsonMR.get(0).getMedications());
                     pOut.setMedicalRecord(mrOut);
                     return pOut;
                 })

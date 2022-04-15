@@ -1,8 +1,6 @@
-package com.safetynet.alerts.json;
+package com.safetynet.alerts.dal.json;
 
 import com.safetynet.alerts.domain.model.FireStation;
-import com.safetynet.alerts.json.entity.JsonFile;
-import com.safetynet.alerts.json.entity.JsonFirestations;
 
 import java.util.List;
 import java.util.stream.Collectors;

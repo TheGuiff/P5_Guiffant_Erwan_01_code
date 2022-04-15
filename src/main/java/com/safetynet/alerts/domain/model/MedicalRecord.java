@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class MedicalRecord {
 
-    List<String> medication;
+    List<String> medications;
     List<String> allergies;
 
 }

@@ -1,7 +1,7 @@
 package com.safetynet.alerts;
 
-import com.safetynet.alerts.json.JsonFileLoader;
-import com.safetynet.alerts.json.entity.JsonFile;
+import com.safetynet.alerts.dal.json.JsonFileLoader;
+import com.safetynet.alerts.dal.json.JsonFile;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
