@@ -1,7 +1,6 @@
-package com.safetynet.alerts.json.entity;
+package com.safetynet.alerts.dal.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.safetynet.alerts.json.JsonMedicalRecords;
 import lombok.Getter;
 import lombok.Setter;
 

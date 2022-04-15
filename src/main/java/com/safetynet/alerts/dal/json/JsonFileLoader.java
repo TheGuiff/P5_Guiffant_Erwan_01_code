@@ -1,8 +1,7 @@
-package com.safetynet.alerts.json;
+package com.safetynet.alerts.dal.json;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.alerts.json.entity.JsonFile;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
