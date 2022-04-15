@@ -1,11 +1,14 @@
 package com.safetynet.alerts.web.controller;
 
+import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.web.dto.PersonDto;
 import com.safetynet.alerts.domain.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class PersonCrudController {
@@ -14,7 +17,7 @@ public class PersonCrudController {
     PersonService personService;
 
     @GetMapping("/person")
-    public Iterable<PersonDto> getPersons() {
+    public List<PersonDto> getPersons() {
         return personService.getPersons();
     }
 

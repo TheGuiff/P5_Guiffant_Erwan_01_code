@@ -1,4 +1,4 @@
-package com.safetynet.alerts.dal.json;
+package com.safetynet.alerts.dal.json.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 public class JsonFile {
 
     public List<JsonPerson> persons;
-    public List<JsonFirestations> firestations;
+    public List<JsonFireStation> firestations;
     @JsonProperty("medicalrecords")
     public List<JsonMedicalRecords> medicalRecords;
 

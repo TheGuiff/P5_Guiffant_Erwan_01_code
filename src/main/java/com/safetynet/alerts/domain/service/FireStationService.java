@@ -1,7 +1,8 @@
 package com.safetynet.alerts.domain.service;
 
-import com.safetynet.alerts.dal.data.Datas;
+import com.safetynet.alerts.dal.repository.FireStationRepository;
 import com.safetynet.alerts.web.dto.FireStationDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -9,8 +10,11 @@ import java.util.stream.Collectors;
 @Service
 public class FireStationService {
 
+    @Autowired
+    FireStationRepository fireStationRepository;
+
     public Iterable<FireStationDto> getFireStations () {
-        return Datas.listFireStations.stream().map(f -> {
+        return fireStationRepository.findAll().stream().map(f -> {
             FireStationDto fireStationDto = new FireStationDto();
             fireStationDto.setNumber(f.getNumber());
             fireStationDto.setAdresses(f.getAdresses());
@@ -19,7 +23,7 @@ public class FireStationService {
     }
 
     public FireStationDto getFireStation (int number) {
-        return Datas.listFireStations.stream()
+        return fireStationRepository.findAll().stream()
                 .filter(f -> f.getNumber() == number)
                 .map(f -> {
                     FireStationDto fireStationDto = new FireStationDto();

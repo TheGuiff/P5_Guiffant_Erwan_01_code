@@ -1,5 +1,7 @@
-package com.safetynet.alerts.dal.json;
+package com.safetynet.alerts.dal.json.processing;
 
+import com.safetynet.alerts.dal.json.data.JsonFile;
+import com.safetynet.alerts.dal.json.data.JsonMedicalRecords;
 import com.safetynet.alerts.domain.model.MedicalRecord;
 import com.safetynet.alerts.domain.model.Person;
 
@@ -9,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class PersonsBuilder {
 
-    public List<Person> GetPersons (JsonFile jsonFile) {
+    public List<Person> getPersons(JsonFile jsonFile) {
 
         return jsonFile.getPersons().stream()
                 .map(temp -> {

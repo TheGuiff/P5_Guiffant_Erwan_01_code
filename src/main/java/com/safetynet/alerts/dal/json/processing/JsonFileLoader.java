@@ -1,7 +1,8 @@
-package com.safetynet.alerts.dal.json;
+package com.safetynet.alerts.dal.json.processing;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.alerts.dal.json.data.JsonFile;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
@@ -9,7 +10,7 @@ import java.io.InputStream;
 @Component
 public class JsonFileLoader {
 
-    public JsonFile DataToPersons(String dataFile) {
+    public JsonFile fileLoader (String dataFile) {
 
         InputStream inputStream;
         JsonFile jsonFile = null;
