@@ -1,4 +1,4 @@
-package com.safetynet.alerts.dal.json;
+package com.safetynet.alerts.dal.json.data;
 
 import lombok.Getter;
 import lombok.Setter;

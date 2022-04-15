@@ -1,7 +1,7 @@
 package com.safetynet.alerts;
 
-import com.safetynet.alerts.dal.json.JsonFileLoader;
-import com.safetynet.alerts.dal.json.JsonFile;
+import com.safetynet.alerts.dal.json.processing.JsonFileLoader;
+import com.safetynet.alerts.dal.json.data.JsonFile;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,7 +18,7 @@ public class FileLoaderTest {
         //GIVEN
         JsonFile jsonFile;
         //WHEN
-        jsonFile = fileLoader.DataToPersons(dataFileTest);
+        jsonFile = fileLoader.fileLoader(dataFileTest);
         //THEN
         assertNotNull(jsonFile);
         assertEquals(3,jsonFile.getPersons().size());
@@ -32,7 +32,7 @@ public class FileLoaderTest {
         //GIVEN
         JsonFile jsonFile;
         //WHEN
-        jsonFile = fileLoader.DataToPersons("");
+        jsonFile = fileLoader.fileLoader("");
         //THEN
         assertNull(jsonFile);
     }
