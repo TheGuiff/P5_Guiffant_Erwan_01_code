@@ -12,15 +12,11 @@ public class FireStationsBuilder {
     public List<FireStation> getFireStations(JsonFile jsonFile) {
 
         return jsonFile.getFirestations().stream()
-                    .map(temp -> {
-                    FireStation fOut = new FireStation();
-                    fOut.setNumber(Integer.parseInt(temp.getStation()));
-                    fOut.setAdresses(jsonFile.getFirestations().stream()
-                            .filter(fs -> Integer.parseInt(fs.getStation()) == fOut.getNumber())
-                            .map(JsonFireStation::getAddress)
-                            .collect(Collectors.toList()));
-                    return fOut;
-                })
+                    .map(temp -> new FireStation(Integer.parseInt(temp.getStation()),
+                            jsonFile.getFirestations().stream()
+                                    .filter(fs -> Integer.parseInt(fs.getStation()) == Integer.parseInt(temp.getStation()))
+                                    .map(JsonFireStation::getAddress)
+                                    .collect(Collectors.toList())))
                 .distinct()
                 .collect(Collectors.toList());
     }
