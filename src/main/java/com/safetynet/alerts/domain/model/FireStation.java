@@ -10,7 +10,13 @@ import java.util.List;
 public class FireStation {
 
     private int number;
-    private List<String> adresses;
+    private List<String> addresses;
+
+    public FireStation (int number,
+                        List<String> addresses) {
+        this.setNumber(number);
+        this.setAddresses(addresses);
+    }
 
     @Override
     public boolean equals(Object obj) {

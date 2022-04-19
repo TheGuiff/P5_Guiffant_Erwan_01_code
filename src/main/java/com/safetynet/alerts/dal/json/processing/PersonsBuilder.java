@@ -15,19 +15,18 @@ public class PersonsBuilder {
 
         return jsonFile.getPersons().stream()
                 .map(temp -> {
-                    Person pOut = new Person();
-                    MedicalRecord mrOut = new MedicalRecord();
-                    pOut.setFirstName(temp.getFirstName());
-                    pOut.setLastName(temp.getLastName());
-                    pOut.setAddress(temp.getAddress());
-                    pOut.setCity(temp.getCity());
-                    pOut.setEmail(temp.getEmail());
-                    pOut.setZip(temp.getZip());
-                    pOut.setPhone(temp.getPhone());
+                    Person pOut = new Person(temp.getFirstName(),
+                            temp.getLastName(),
+                            temp.getAddress(),
+                            temp.getCity(),
+                            temp.getZip(),
+                            temp.getPhone(),
+                            temp.getEmail());
                     List<JsonMedicalRecords> jsonMR = jsonFile.getMedicalRecords().stream().
                             filter(mr -> Objects.equals(mr.getLastName(), pOut.getLastName()) && Objects.equals(mr.getFirstName(), pOut.getFirstName())).
                             collect(Collectors.toList());
                     pOut.setBirthdate(jsonMR.get(0).getBirthdate());
+                    MedicalRecord mrOut = new MedicalRecord();
                     mrOut.setAllergies(jsonMR.get(0).getAllergies());
                     mrOut.setMedications(jsonMR.get(0).getMedications());
                     pOut.setMedicalRecord(mrOut);
