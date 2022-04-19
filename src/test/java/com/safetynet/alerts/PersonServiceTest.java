@@ -4,7 +4,6 @@ import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.PersonDto;
-import net.bytebuddy.dynamic.DynamicType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

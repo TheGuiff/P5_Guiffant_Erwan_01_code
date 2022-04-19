@@ -2,7 +2,6 @@ package com.safetynet.alerts;
 
 import com.safetynet.alerts.dal.repository.FireStationRepository;
 import com.safetynet.alerts.domain.model.FireStation;
-import com.safetynet.alerts.domain.model.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,12 @@ public class FireStationRepositoryTest {
 
     @Autowired
     FireStationRepository fireStationRepository;
+
+    static FireStation fireStation;
+    static List<String> listAddresses;
+
+    static final String address = "address";
+    static final String addressTest = "address test";
 
     @Test
     public void testNumberOfFireStationsInListFireStation () {
@@ -45,12 +50,27 @@ public class FireStationRepositoryTest {
     @Test
     public void testCreateFireStation () {
         //GIVEN
-        List<String> listAddresses = new ArrayList<>();
-        listAddresses.add("addresse");
-        FireStation fireStation = new FireStation(5,listAddresses);
+        listAddresses = new ArrayList<>();
+        listAddresses.add(address);
+        fireStation = new FireStation(5,listAddresses);
         //WHEN
         FireStation createdFireStation = fireStationRepository.save(fireStation);
         //THEN
         Assertions.assertEquals(5, fireStationRepository.getListFireStations().size());
+    }
+
+    @Test
+    public void testUpdateFireStation () {
+        //GIVEN
+        listAddresses = fireStationRepository.getListFireStations().get(1).getAddresses();
+        listAddresses.add(addressTest);
+        fireStation = new FireStation(fireStationRepository.getListFireStations().get(1).getNumber(),listAddresses);
+        //WHEN
+        fireStationRepository.save(fireStation);
+        //THEN
+        Assertions.assertEquals(4, fireStationRepository.getListFireStations().size());
+        Assertions.assertTrue(fireStationRepository.getListFireStations().stream()
+                .anyMatch(f -> Objects.equals(f.getNumber(),fireStation.getNumber())
+                && f.getAddresses().stream().anyMatch(a -> Objects.equals(a,addressTest))));
     }
 }
