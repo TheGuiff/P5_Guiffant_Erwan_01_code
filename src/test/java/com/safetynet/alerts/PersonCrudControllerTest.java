@@ -1,7 +1,7 @@
 package com.safetynet.alerts;
 
 import com.safetynet.alerts.domain.service.PersonService;
-import com.safetynet.alerts.web.controller.PersonCrudController;
+import com.safetynet.alerts.web.controller.PersonController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = PersonCrudController.class)
+@WebMvcTest(controllers = PersonController.class)
 public class PersonCrudControllerTest {
 
     @Autowired
@@ -22,8 +22,8 @@ public class PersonCrudControllerTest {
     @MockBean
     private PersonService personService;
 
-    static final String personTestForGetAndDelete = "/person/John,Boyd";
-    static final String personTestForCreate = "/person/Test,Test,,,,,,";
+    static final String endpointTestForGetAndDelete = "/person/Test,Test";
+    static final String endpointTestForCreate = "/person/Test,Test,,,,,,";
 
     @Test
     public void testGetPersons() throws Exception {
@@ -33,19 +33,19 @@ public class PersonCrudControllerTest {
 
     @Test
     public void testGetPerson() throws Exception {
-        mockMvc.perform(get(personTestForGetAndDelete))
+        mockMvc.perform(get(endpointTestForGetAndDelete))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testDeletePerson() throws Exception {
-        mockMvc.perform(delete(personTestForGetAndDelete))
+        mockMvc.perform(delete(endpointTestForGetAndDelete))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testSavePerson() throws Exception {
-        mockMvc.perform(post(personTestForCreate))
+        mockMvc.perform(post(endpointTestForCreate))
                 .andExpect(status().isOk());
     }
 

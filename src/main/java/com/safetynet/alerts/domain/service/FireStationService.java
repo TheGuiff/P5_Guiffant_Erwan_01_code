@@ -27,12 +27,21 @@ public class FireStationService {
         return optionalFireStation.get();
     }
 
-    public void deleteFireStation(int number) {
-        fireStationRepository.delete(number);
+    public void deleteMappingFireStation(int number) {
+        fireStationRepository.deleteMappingFireStation(number);
     }
 
-    public FireStation saveFireStation (FireStation fireStation) {
-        return fireStationRepository.save(fireStation);
+    public void deleteMappingAddress(String address) {
+        fireStationRepository.deleteMappingAddress(address);
+    }
+
+    public FireStation addMappingFiresStationAddress (int number, String address) {
+        return fireStationRepository.addMappingFiresStationAddress(number, address);
+    }
+
+    public FireStation updateMappingFireStationAddress(int number, String address) {
+        deleteMappingAddress(address);
+        return addMappingFiresStationAddress(number,address);
     }
 
     public FireStationDto fireStationToFireStationDto (FireStation fireStation) {
@@ -45,6 +54,5 @@ public class FireStationService {
     public List<FireStationDto> listFireStationToFireStationDto (List<FireStation> listFireStation) {
         return listFireStation.stream().map(this::fireStationToFireStationDto).collect(Collectors.toList());
     }
-
 
 }
