@@ -1,6 +1,5 @@
 package com.safetynet.alerts.web.controller;
 
-import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.web.dto.PersonDto;
 import com.safetynet.alerts.domain.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class PersonCrudController {
+public class PersonController {
 
     @Autowired
     PersonService personService;
@@ -32,6 +31,7 @@ public class PersonCrudController {
     }
 
     @PostMapping("person/{firstName},{lastName},{address},{city},{zip},{phone},{email}")
+    @PutMapping("person/{firstName},{lastName},{address},{city},{zip},{phone},{email}")
     public PersonDto savePerson(@PathVariable("firstName") final String firstName,
                                 @PathVariable("lastName") final String lastName,
                                 @PathVariable("address") final String address,
@@ -39,14 +39,7 @@ public class PersonCrudController {
                                 @PathVariable("zip") final String zip,
                                 @PathVariable("phone") final String phone,
                                 @PathVariable("email") final String email) {
-        Person person = new Person(firstName,
-                lastName,
-                address,
-                city,
-                zip,
-                phone,
-                email);
-        return personService.personToPersonDto(personService.savePerson(person));
+        return personService.personToPersonDto(personService.savePerson(firstName, lastName, address, city, zip, phone, email));
     }
 
 }

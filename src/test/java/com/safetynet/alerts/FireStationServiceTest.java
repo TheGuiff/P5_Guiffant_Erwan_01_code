@@ -28,38 +28,33 @@ public class FireStationServiceTest {
     @MockBean
     private FireStationRepository fireStationRepository;
 
-    static final String address = "address";
+    static final String addressTest1 = "address1";
+    static final String addressTest2 = "address2";
+    static final int fireStationTest1 = 1;
+    static final int fireStationTest2 = 2;
 
-    static List<FireStation> listFireStation = new ArrayList<>();
-    static FireStation fireStationToAdd;
+    static List<FireStation> listFireStationTest = new ArrayList<>();
 
     @BeforeAll
     static void listOfFireStationTest() {
         List<String> listAddress = new ArrayList<>();
-        listAddress.add(address);
-        listFireStation.add(new FireStation(1,listAddress));
-        listFireStation.add(new FireStation(2,listAddress));
-        fireStationToAdd = new FireStation(3,listAddress);
+        listAddress.add(addressTest1);
+        listFireStationTest.add(new FireStation(fireStationTest1,listAddress));
+        listFireStationTest.add(new FireStation(fireStationTest2,listAddress));
     }
 
     @Test
     public void fireStationToFireStationDtoTest() {
-        //Given
-        final int number = 1;
-        List<String> listAddresses = new ArrayList<>();
-        listAddresses.add(address);
-        FireStation fireStation = new FireStation(number, listAddresses);
-        //When
-        FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(fireStation);
+        FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(listFireStationTest.get(0));
         //Then
-        assertEquals(number,fireStationDto.getNumber());
-        assertEquals(listAddresses,fireStationDto.getAdresses());
+        assertEquals(listFireStationTest.get(0).getNumber(),fireStationDto.getNumber());
+        assertEquals(listFireStationTest.get(0).getAddresses(),fireStationDto.getAdresses());
     }
 
     @Test
     public void listFireStationToFireStationDtoTest() {
         //When
-        List<FireStationDto> listFireStationDto = fireStationService.listFireStationToFireStationDto(listFireStation);
+        List<FireStationDto> listFireStationDto = fireStationService.listFireStationToFireStationDto(listFireStationTest);
         //Then
         assertEquals(2,listFireStationDto.size());
     }
@@ -68,7 +63,7 @@ public class FireStationServiceTest {
     public void getListFireStationOk () {
         //Given
         try {
-            when(fireStationRepository.findAll()).thenReturn(listFireStation);
+            when(fireStationRepository.findAll()).thenReturn(listFireStationTest);
         } catch (Exception e) {
             e.printStackTrace();
             throw  new RuntimeException("Failed to set up test mock objects");
@@ -80,25 +75,37 @@ public class FireStationServiceTest {
     @Test
     public void getFireStationByIdOk () {
         try {
-            when(fireStationRepository.findById(listFireStation.get(0).getNumber())).thenReturn(Optional.of(listFireStation.get(0)));
+            when(fireStationRepository.findById(listFireStationTest.get(0).getNumber())).thenReturn(Optional.of(listFireStationTest.get(0)));
         } catch (Exception e) {
             e.printStackTrace();
             throw  new RuntimeException("Failed to set up test mock objects");
         }
-        assertEquals(listFireStation.get(0).getNumber(),
-                fireStationService.getFireStation(listFireStation.get(0).getNumber()).getNumber());
+        assertEquals(listFireStationTest.get(0).getNumber(),
+                fireStationService.getFireStation(listFireStationTest.get(0).getNumber()).getNumber());
     }
 
     @Test
-    public void deleteFireStationOk () {
-        fireStationService.deleteFireStation(listFireStation.get(0).getNumber());
+    public void deleteMappingFireStationTest () {
+        int number = listFireStationTest.get(0).getNumber();
+        fireStationService.deleteMappingFireStation(number);
         verify(fireStationRepository, Mockito.times(1))
-                .delete(listFireStation.get(0).getNumber());
+                .deleteMappingFireStation(number);
     }
 
     @Test
-    public void saveFirePersonOk () {
-        fireStationService.saveFireStation(fireStationToAdd);
-        verify(fireStationRepository, Mockito.times(1)).save(fireStationToAdd);
+    public void deleteMappingAddressTest () {
+        String address = listFireStationTest.get(0).getAddresses().get(0);
+        fireStationService.deleteMappingAddress(address);
+        verify(fireStationRepository, Mockito.times(1))
+                .deleteMappingAddress(address);
     }
+
+    @Test
+    public void addMappingFireStationAddressTest () {
+        int number = listFireStationTest.get(0).getNumber();
+        fireStationService.addMappingFiresStationAddress(number, addressTest2);
+        verify(fireStationRepository, Mockito.times(1))
+                .addMappingFiresStationAddress(number, addressTest2);
+    }
+
 }

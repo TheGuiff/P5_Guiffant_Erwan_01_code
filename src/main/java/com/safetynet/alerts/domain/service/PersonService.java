@@ -31,21 +31,25 @@ public class PersonService {
         personRepository.delete(firstName, lastName);
     }
 
-    public Person savePerson (Person person) {
-        return personRepository.save(person);
+    public Person savePerson (String firstName,
+                              String lastName,
+                              String address,
+                              String city,
+                              String zip,
+                              String phone,
+                              String email) {
+        return personRepository.save(new Person(firstName, lastName, address, city, zip, phone, email));
     }
 
     public PersonDto personToPersonDto (Person person) {
         PersonDto personDto = new PersonDto();
         personDto.setFirstName(person.getFirstName());
         personDto.setLastName(person.getLastName());
-        personDto.setBirthdate(person.getBirthdate());
         personDto.setAddress(person.getAddress());
         personDto.setCity(person.getCity());
         personDto.setZip(person.getZip());
         personDto.setEmail(person.getEmail());
         personDto.setPhone(person.getPhone());
-        personDto.setMedicalRecord(person.getMedicalRecord());
         return personDto;
     }
 

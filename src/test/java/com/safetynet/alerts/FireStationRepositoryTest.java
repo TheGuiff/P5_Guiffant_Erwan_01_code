@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 
 @SpringBootTest
 public class FireStationRepositoryTest {
@@ -20,57 +19,65 @@ public class FireStationRepositoryTest {
     static FireStation fireStation;
     static List<String> listAddresses;
 
-    static final String address = "address";
     static final String addressTest = "address test";
+    static final int fireStationTest = 1;
+    static final int newFireStationTest = 8;
 
     @Test
     public void testNumberOfFireStationsInListFireStation () {
         //GIVEN WHEN
         List<FireStation> listFireStation = fireStationRepository.findAll();
         //THEN
-        Assertions.assertEquals(4, listFireStation.size());
+        Assertions.assertEquals(fireStationRepository.getListFireStations().size(), listFireStation.size());
     }
 
     @Test
     public void testFireStationOfListIsOk () {
-        Assertions.assertTrue(fireStationRepository.findById(1).isPresent());
+        Assertions.assertTrue(fireStationRepository.findById(fireStationTest).isPresent());
     }
 
     @Test
     public void testFireStationNotInListIsKo () {
-        Assertions.assertFalse(fireStationRepository.findById(12).isPresent());
+        Assertions.assertFalse(fireStationRepository.findById(fireStationRepository.getListFireStations().size()+1).isPresent());
     }
 
     @Test
-    public void testDeleteFireStation () {
-        fireStationRepository.delete(1);
-        Assertions.assertEquals(3, fireStationRepository.getListFireStations().size());
+    public void deleteMappingFireStationTest () {
+        int nbFireStation = fireStationRepository.getListFireStations().size();
+        fireStationRepository.deleteMappingFireStation(fireStationTest);
+        Assertions.assertEquals(nbFireStation-1,fireStationRepository.getListFireStations().size());
+        Assertions.assertFalse(fireStationRepository.findById(fireStationTest).isPresent());
     }
 
     @Test
-    public void testCreateFireStation () {
-        //GIVEN
-        listAddresses = new ArrayList<>();
-        listAddresses.add(address);
-        fireStation = new FireStation(5,listAddresses);
-        //WHEN
-        FireStation createdFireStation = fireStationRepository.save(fireStation);
-        //THEN
-        Assertions.assertEquals(5, fireStationRepository.getListFireStations().size());
+    public void deleteMappingFireStationTest_WhenUnknownFireStation() {
+        int nbFireStation = fireStationRepository.getListFireStations().size();
+        Assertions.assertThrows(NoSuchElementException.class,() -> fireStationRepository.deleteMappingFireStation(nbFireStation+1));
     }
 
     @Test
-    public void testUpdateFireStation () {
-        //GIVEN
-        listAddresses = fireStationRepository.getListFireStations().get(1).getAddresses();
-        listAddresses.add(addressTest);
-        fireStation = new FireStation(fireStationRepository.getListFireStations().get(1).getNumber(),listAddresses);
-        //WHEN
-        fireStationRepository.save(fireStation);
-        //THEN
-        Assertions.assertEquals(4, fireStationRepository.getListFireStations().size());
-        Assertions.assertTrue(fireStationRepository.getListFireStations().stream()
-                .anyMatch(f -> Objects.equals(f.getNumber(),fireStation.getNumber())
-                && f.getAddresses().stream().anyMatch(a -> Objects.equals(a,addressTest))));
+    public void deleteMappingAddressTest () {
+        String addressToDelete = fireStationRepository.getListFireStations().get(0).getAddresses().get(0);
+        int nbAddresses = fireStationRepository.getListFireStations().get(0).getAddresses().size();
+        fireStationRepository.deleteMappingAddress(addressToDelete);
+        Assertions.assertEquals(nbAddresses-1, fireStationRepository.getListFireStations().get(0).getAddresses().size());
+        Assertions.assertNotEquals(addressToDelete, fireStationRepository.getListFireStations().get(0).getAddresses().get(0));
+    }
+
+    @Test
+    public void addMappingFireStationAddress_WhenExistingFireStation () {
+        int nbAddresses = fireStationRepository.getListFireStations().get(0).getAddresses().size();
+        int nbFireStations = fireStationRepository.getListFireStations().size();
+        fireStationRepository.addMappingFiresStationAddress(fireStationRepository.getListFireStations().get(0).getNumber(),addressTest);
+        Assertions.assertEquals(nbFireStations,fireStationRepository.getListFireStations().size());
+        Assertions.assertEquals(nbAddresses+1,fireStationRepository.getListFireStations().get(0).getAddresses().size());
+        Assertions.assertTrue(fireStationRepository.getListFireStations().get(0).getAddresses().contains(addressTest));
+    }
+
+    @Test
+    public void addMappingFireStationAddress_WhenNonExistingFireStation () {
+        int nbFireStations = fireStationRepository.getListFireStations().size();
+        fireStationRepository.addMappingFiresStationAddress(newFireStationTest,addressTest);
+        Assertions.assertEquals(nbFireStations+1,fireStationRepository.getListFireStations().size());
     }
 }

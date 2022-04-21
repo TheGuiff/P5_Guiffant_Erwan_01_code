@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,9 +32,17 @@ public class PersonServiceTest {
     @MockBean
     private PersonRepository personRepository;
 
-    static final Person personTest1 = new Person("Test","Test1","","","","","");
-    static final Person personTest2 = new Person("Test","Test2","","","","","");
-    static final Person personTestSave = new Person("Test","Test3","","","","","");
+    static final String firsNameTest = "Test";
+    static final String lastNameTest1 = "Test1";
+    static final String lastNameTest2 = "Test2";
+    static final String lastNameTest3 = "Test3";
+    static final String addressTest = "address";
+    static final String cityTest = "city";
+    static final String zipTest = "zip";
+    static final String phoneTest = "phone";
+    static final String emailTest = "email";
+    static final Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest, cityTest, zipTest, phoneTest, emailTest);
+    static final Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest, cityTest, zipTest, phoneTest, emailTest);
     static List<Person> listPerson = new ArrayList<>();
 
     @BeforeAll
@@ -96,13 +105,13 @@ public class PersonServiceTest {
     @Test
     public void deletePersonOk () {
         personService.deletePerson(personTest1.getFirstName(), personTest1.getLastName());
-        verify(personRepository, Mockito.times(1)).delete(personTestSave.getFirstName(), personTestSave.getLastName());
+        verify(personRepository, Mockito.times(1)).delete(personTest1.getFirstName(), personTest1.getLastName());
     }
 
     @Test
     public void savePersonOk () {
-        personService.savePerson(personTestSave);
-        verify(personRepository, Mockito.times((1))).save(personTestSave);
+        personService.savePerson(firsNameTest,lastNameTest3,addressTest,cityTest,zipTest,phoneTest,emailTest);
+        verify(personRepository, Mockito.times((1))).save(any(Person.class));
     }
 
 }
