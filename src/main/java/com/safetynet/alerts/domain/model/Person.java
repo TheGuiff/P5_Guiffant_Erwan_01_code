@@ -3,6 +3,8 @@ package com.safetynet.alerts.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class Person {
@@ -15,7 +17,8 @@ public class Person {
     private String zip;
     private String phone;
     private String email;
-    private MedicalRecord medicalRecord;
+    private List<String> medications;
+    private List<String> allergies;
 
     public Person (String firstNameIn,
                           String lastNameIn,

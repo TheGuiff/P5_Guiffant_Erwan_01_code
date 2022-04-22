@@ -37,7 +37,8 @@ public class PersonRepository {
         Optional<Person> oldPerson = findById(person.getFirstName(), person.getLastName());
         if (oldPerson.isPresent()){
             person.setBirthdate(oldPerson.get().getBirthdate());
-            person.setMedicalRecord(oldPerson.get().getMedicalRecord());
+            person.setMedications(oldPerson.get().getMedications());
+            person.setAllergies(oldPerson.get().getAllergies());
             delete(person.getFirstName(), person.getLastName());
         }
         this.listPersons.add(person);
