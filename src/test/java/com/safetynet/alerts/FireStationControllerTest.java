@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = FireStationController.class)
-public class FireStationCrudControllerTest {
+public class FireStationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

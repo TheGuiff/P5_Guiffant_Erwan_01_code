@@ -4,6 +4,7 @@ import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.PersonDto;
+import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,13 +38,14 @@ public class PersonServiceTest {
     static final String lastNameTest1 = "Test1";
     static final String lastNameTest2 = "Test2";
     static final String lastNameTest3 = "Test3";
-    static final String addressTest = "address";
+    static final String addressTest1 = "address1";
+    static final String addressTest2 = "address2";
     static final String cityTest = "city";
     static final String zipTest = "zip";
     static final String phoneTest = "phone";
     static final String emailTest = "email";
-    static final Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest, cityTest, zipTest, phoneTest, emailTest);
-    static final Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest, cityTest, zipTest, phoneTest, emailTest);
+    static final Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest1, cityTest, zipTest, phoneTest, emailTest);
+    static final Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest2, cityTest, zipTest, phoneTest, emailTest);
     static List<Person> listPerson = new ArrayList<>();
 
     @BeforeAll
@@ -109,9 +112,21 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void savePersonOk () {
-        personService.savePerson(firsNameTest,lastNameTest3,addressTest,cityTest,zipTest,phoneTest,emailTest);
-        verify(personRepository, Mockito.times((1))).save(any(Person.class));
+    public void listPersonToPhoneAlertDtoTest() {
+        PhoneAlertDto phoneAlertDto = personService.listPersonToPhoneAlertDto(listPerson);
+        assertEquals(2,phoneAlertDto.getListPhones().size());
+        assertTrue(phoneAlertDto.getListPhones().contains(listPerson.get(0).getPhone()));
+        assertTrue(phoneAlertDto.getListPhones().contains(listPerson.get(1).getPhone()));
+    }
+
+    @Test
+    public void listPersonsByListAddressesTest() {
+        List<String> listAddresses = new ArrayList<>();
+        listAddresses.add(addressTest1);
+        when(personRepository.getListPersons()).thenReturn(listPerson);
+        List<Person> personList = personService.listPersonsByListAddresses(listAddresses);
+        assertEquals(1,personList.size());
+        assertEquals(addressTest1,personList.get(0).getAddress());
     }
 
 }

@@ -29,7 +29,7 @@ public class PersonRepository {
 
     public void delete(String firsName, String lastName) {
         Optional<Person> optionalPerson = findById(firsName, lastName);
-        optionalPerson.orElseThrow(NoSuchElementException::new);
+        optionalPerson.orElseThrow(() -> new NoSuchElementException("erreur"));
         this.listPersons.remove(optionalPerson.get());
     }
 

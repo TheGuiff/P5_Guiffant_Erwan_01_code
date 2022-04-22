@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = MedicalRecordController.class)
-public class MedicalRecordCrudControllerTest {
+public class MedicalRecordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -20,12 +21,16 @@ public class MedicalRecordCrudControllerTest {
     @MockBean
     MedicalRecordService medicalRecordService;
 
-    static final String endpointTestForAddAndUpdate = "/medicalRecord/Test,Test,22/04/2022,[med1,med2],[al1, al2]";
+    static final String endpointTestForAddAndUpdate = "/medicalRecord/";
     static final String endpointTestForDelete = "/medicalRecord/Test,Test";
 
     @Test
     public void postMedicalRecordTest() throws Exception {
-        mockMvc.perform(post(endpointTestForAddAndUpdate))
+        mockMvc.perform(post(endpointTestForAddAndUpdate).content(" { \"firstName\":\"John\", \n" +
+                        " \"lastName\":\"Boyd\", \n" +
+                        " \"birthdate\":\"03/06/1984\", \n" +
+                        " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
+                        " \"allergies\":[\"nillacilan\"] }").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
