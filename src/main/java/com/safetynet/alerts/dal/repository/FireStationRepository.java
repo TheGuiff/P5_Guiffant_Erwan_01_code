@@ -19,17 +19,17 @@ public class FireStationRepository {
         return this.listFireStations;
     }
 
-    public Optional<FireStation> findById (int number) {
+    public Optional<FireStation> findById (int station) {
         return this.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getStation() == number)
+                .filter(fireStation -> fireStation.getStation() == station)
                 .findFirst();
     }
 
-    public void deleteMappingFireStation(int number) throws NoSuchElementException {
-        Optional<FireStation> optionalFireStation = findById(number);
+    public void deleteMappingFireStation(int station) throws NoSuchElementException {
+        Optional<FireStation> optionalFireStation = findById(station);
         optionalFireStation.orElseThrow(NoSuchElementException::new);
         this.setListFireStations(this.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getStation() != number)
+                .filter(fireStation -> fireStation.getStation() != station)
                 .collect(Collectors.toList()));
     }
 
@@ -41,12 +41,12 @@ public class FireStationRepository {
                 .collect(Collectors.toList()));
     }
 
-    public FireStation addMappingFiresStationAddress(int number, String address) {
-        Optional<FireStation> optionalFireStation = findById(number);
+    public FireStation addMappingFiresStationAddress(int station, String address) {
+        Optional<FireStation> optionalFireStation = findById(station);
         if (optionalFireStation.isPresent()) {
             this.setListFireStations(this.getListFireStations().stream()
                     .peek(fireStation -> {
-                        if (fireStation.getStation() == number) {
+                        if (fireStation.getStation() == station) {
                             List<String> listAddresses = fireStation.getAddresses();
                             listAddresses.add(address);
                             fireStation.setAddresses(listAddresses);
@@ -56,9 +56,9 @@ public class FireStationRepository {
         } else {
             List<String> addresses = new ArrayList<>();
             addresses.add(address);
-            FireStation fireStation = new FireStation(number, addresses);
+            FireStation fireStation = new FireStation(station, addresses);
             this.listFireStations.add(fireStation);
         }
-        return findById(number).get();
+        return findById(station).get();
     }
 }

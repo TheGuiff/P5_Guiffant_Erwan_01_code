@@ -21,27 +21,27 @@ public class FireStationService {
         return fireStationRepository.findAll();
     }
 
-    public FireStation getFireStation (int number) {
-        Optional<FireStation> optionalFireStation = fireStationRepository.findById(number);
+    public FireStation getFireStation (int station) {
+        Optional<FireStation> optionalFireStation = fireStationRepository.findById(station);
         optionalFireStation.orElseThrow(NoSuchElementException::new);
         return optionalFireStation.get();
     }
 
-    public void deleteMappingFireStation(int number) {
-        fireStationRepository.deleteMappingFireStation(number);
+    public void deleteMappingFireStation(int station) {
+        fireStationRepository.deleteMappingFireStation(station);
     }
 
     public void deleteMappingAddress(String address) {
         fireStationRepository.deleteMappingAddress(address);
     }
 
-    public FireStation addMappingFiresStationAddress (int number, String address) {
-        return fireStationRepository.addMappingFiresStationAddress(number, address);
+    public FireStation addMappingFiresStationAddress (int station, String address) {
+        return fireStationRepository.addMappingFiresStationAddress(station, address);
     }
 
-    public FireStation updateMappingFireStationAddress(int number, String address) {
+    public FireStation updateMappingFireStationAddress(int station, String address) {
         deleteMappingAddress(address);
-        return addMappingFiresStationAddress(number,address);
+        return addMappingFiresStationAddress(station,address);
     }
 
     public FireStationDto fireStationToFireStationDto (FireStation fireStation) {
@@ -55,9 +55,9 @@ public class FireStationService {
         return listFireStation.stream().map(this::fireStationToFireStationDto).collect(Collectors.toList());
     }
 
-    public List<String> listAddressesByNUmber (int number) throws NoSuchElementException {
+    public List<String> listAddressesByNUmber (int station) throws NoSuchElementException {
         Optional<List<String>> optionalStrings = fireStationRepository.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getStation() == number)
+                .filter(fireStation -> fireStation.getStation() == station)
                 .map(FireStation::getAddresses)
                 .findFirst();
         return optionalStrings.orElseThrow(NoSuchElementException::new);
