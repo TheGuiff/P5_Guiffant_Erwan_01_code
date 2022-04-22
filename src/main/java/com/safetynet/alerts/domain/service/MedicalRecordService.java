@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MedicalRecordService {
@@ -20,7 +19,8 @@ public class MedicalRecordService {
         medicalRecordDto.setFirstName(person.getFirstName());
         medicalRecordDto.setLastName(person.getLastName());
         medicalRecordDto.setBirthdate(person.getBirthdate());
-        medicalRecordDto.setMedicalRecord(person.getMedicalRecord());
+        medicalRecordDto.setMedications(person.getMedications());
+        medicalRecordDto.setAllergies(person.getAllergies());
         return medicalRecordDto;
     }
 

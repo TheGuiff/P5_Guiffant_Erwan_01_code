@@ -1,11 +1,9 @@
 package com.safetynet.alerts;
 
 import com.safetynet.alerts.dal.repository.MedicalRecordRepository;
-import com.safetynet.alerts.domain.model.MedicalRecord;
 import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.domain.service.MedicalRecordService;
 import com.safetynet.alerts.web.dto.MedicalRecordDto;
-import com.safetynet.alerts.web.dto.PersonDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +46,6 @@ public class MedicalRecordServiceTest {
     static List<Person> listPerson = new ArrayList<>();
     static List<String> listMedications = new ArrayList<>();
     static List<String> listAllergies = new ArrayList<>();
-    static MedicalRecord medicalRecord = new MedicalRecord();
 
     @BeforeAll
     static void listOfPersonsTest () {
@@ -56,10 +53,10 @@ public class MedicalRecordServiceTest {
         personTest2.setBirthdate(birthdateTest1);
         listMedications.add(medicationTest1);
         listAllergies.add(allergieTest1);
-        medicalRecord.setMedications(listMedications);
-        medicalRecord.setAllergies(listAllergies);
-        personTest1.setMedicalRecord(medicalRecord);
-        personTest2.setMedicalRecord(medicalRecord);
+        personTest1.setMedications(listMedications);
+        personTest1.setAllergies(listAllergies);
+        personTest2.setAllergies(listAllergies);
+        personTest2.setMedications(listMedications);
         listPerson.add(personTest1);
         listPerson.add(personTest2);
     }
@@ -72,10 +69,10 @@ public class MedicalRecordServiceTest {
         assertEquals(personTest1.getFirstName(),medicalRecordDto.getFirstName());
         assertEquals(personTest1.getLastName(), medicalRecordDto.getLastName());
         assertEquals(personTest1.getBirthdate(), medicalRecordDto.getBirthdate());
-        assertEquals(1, medicalRecordDto.getMedicalRecord().getMedications().size());
-        assertEquals(1, medicalRecordDto.getMedicalRecord().getAllergies().size());
-        assertEquals(medicationTest1, medicalRecordDto.getMedicalRecord().getMedications().get(0));
-        assertEquals(allergieTest1, medicalRecordDto.getMedicalRecord().getAllergies().get(0));
+        assertEquals(1, medicalRecordDto.getMedications().size());
+        assertEquals(1, medicalRecordDto.getAllergies().size());
+        assertEquals(medicationTest1, medicalRecordDto.getMedications().get(0));
+        assertEquals(allergieTest1, medicalRecordDto.getAllergies().get(0));
     }
 
     @Test

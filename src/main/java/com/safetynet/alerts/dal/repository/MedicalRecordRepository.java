@@ -1,6 +1,5 @@
 package com.safetynet.alerts.dal.repository;
 
-import com.safetynet.alerts.domain.model.MedicalRecord;
 import com.safetynet.alerts.domain.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,10 +25,8 @@ public class MedicalRecordRepository {
         }else {
             person = new Person(firstName, lastName,"","","","","");
         }
-        MedicalRecord medicalRecord = new MedicalRecord();
-        medicalRecord.setMedications(medications);
-        medicalRecord.setAllergies(allergies);
-        person.setMedicalRecord(medicalRecord);
+        person.setAllergies(allergies);
+        person.setMedications(medications);
         person.setBirthdate(birthdate);
         return personRepository.save(person);
     }
@@ -38,7 +35,8 @@ public class MedicalRecordRepository {
         personRepository.setListPersons(personRepository.getListPersons().stream()
                 .peek(person -> {if (Objects.equals(person.getFirstName(), firstName) && Objects.equals(person.getLastName(), lastName)) {
                     person.setBirthdate("");
-                    person.setMedicalRecord(null);
+                    person.setAllergies(null);
+                    person.setMedications(null);
                     }
                 })
                 .collect(Collectors.toList()));
