@@ -1,6 +1,5 @@
 package com.safetynet.alerts.web.dto;
 
-import com.safetynet.alerts.domain.model.MedicalRecord;
 import lombok.Getter;
 import lombok.Setter;
 

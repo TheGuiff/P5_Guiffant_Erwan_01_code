@@ -3,6 +3,7 @@ package com.safetynet.alerts.domain.service;
 import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.web.dto.PersonDto;
+import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,18 @@ public class PersonService {
 
     public List<PersonDto> listPersonToPersonDto (List<Person> listPerson) {
         return listPerson.stream().map(this::personToPersonDto).collect(Collectors.toList());
+    }
+
+    public PhoneAlertDto listPersonToPhoneAlertDto(List<Person> listPerson) {
+        PhoneAlertDto phoneAlertDto = new PhoneAlertDto();
+        phoneAlertDto.setListPhones(listPerson.stream().map(Person::getPhone).collect(Collectors.toList()));
+        return phoneAlertDto;
+    }
+
+    public List<Person> listPersonsByListAddresses (List<String> addresses) {
+        return personRepository.getListPersons().stream()
+                .filter(person -> addresses.contains(person.getAddress()))
+                .collect(Collectors.toList());
     }
 
 }
