@@ -52,7 +52,7 @@ public class MedicalRecordRepositoryTest {
     @Test
     public void createMedicalRecordTest () {
         numberOfPersonsBeforeTest = personRepository.getListPersons().size();
-        Person person = medicalRecordRepository.save(firstNameTest, lastNameTest, birthdateTest1, listMedications, listAllergies);
+        Person person = medicalRecordRepository.saveMedicalRecord(firstNameTest, lastNameTest, birthdateTest1, listMedications, listAllergies);
         Assertions.assertEquals(numberOfPersonsBeforeTest, personRepository.getListPersons().size());
         Assertions.assertEquals(firstNameTest, person.getFirstName());
         Assertions.assertEquals(lastNameTest, person.getLastName());
@@ -67,7 +67,7 @@ public class MedicalRecordRepositoryTest {
     public void updateMedicalRecordTest () {
         numberOfPersonsBeforeTest = personRepository.getListPersons().size();
         Person personTest = personRepository.getListPersons().get(0);
-        Person person = medicalRecordRepository.save(personTest.getFirstName(), personTest.getLastName(), birthdateTest1, listMedications, listAllergies);
+        Person person = medicalRecordRepository.saveMedicalRecord(personTest.getFirstName(), personTest.getLastName(), birthdateTest1, listMedications, listAllergies);
         Assertions.assertEquals(numberOfPersonsBeforeTest, personRepository.getListPersons().size());
         Assertions.assertEquals(personTest.getFirstName(), person.getFirstName());
         Assertions.assertEquals(personTest.getLastName(), person.getLastName());

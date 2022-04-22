@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,19 +16,13 @@ public class MedicalRecordRepository {
     @Autowired
     PersonRepository personRepository;
 
-    public Person save(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
-        Person person;
+    public Person saveMedicalRecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
         Optional<Person> optionalPerson = personRepository.findById(firstName, lastName);
-        if (optionalPerson.isPresent()){
-            optionalPerson.get().setBirthdate(birthdate);
-            personRepository.delete(firstName, lastName);
-            person = optionalPerson.get();
-        }else {
-            person = new Person(firstName, lastName,"","","","","");
-        }
-        person.setAllergies(allergies);
-        person.setMedications(medications);
+        Person person = optionalPerson.orElseThrow(() -> new NoSuchElementException("No person with this firstname and lastname"));
         person.setBirthdate(birthdate);
+        person.setMedications(medications);
+        person.setAllergies(allergies);
+        personRepository.delete(firstName, lastName);
         return personRepository.save(person);
     }
 
