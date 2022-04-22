@@ -20,8 +20,8 @@ public class FireStationRepositoryTest {
     static List<String> listAddresses;
 
     static final String addressTest = "address test";
-    static final int fireStationTest = 1;
-    static final int newFireStationTest = 8;
+    static final int stationTest1 = 1;
+    static final int newStationTest = 8;
 
     @Test
     public void testNumberOfFireStationsInListFireStation () {
@@ -33,7 +33,7 @@ public class FireStationRepositoryTest {
 
     @Test
     public void testFireStationOfListIsOk () {
-        Assertions.assertTrue(fireStationRepository.findById(fireStationTest).isPresent());
+        Assertions.assertTrue(fireStationRepository.findById(stationTest1).isPresent());
     }
 
     @Test
@@ -44,9 +44,9 @@ public class FireStationRepositoryTest {
     @Test
     public void deleteMappingFireStationTest () {
         int nbFireStation = fireStationRepository.getListFireStations().size();
-        fireStationRepository.deleteMappingFireStation(fireStationTest);
+        fireStationRepository.deleteMappingFireStation(stationTest1);
         Assertions.assertEquals(nbFireStation-1,fireStationRepository.getListFireStations().size());
-        Assertions.assertFalse(fireStationRepository.findById(fireStationTest).isPresent());
+        Assertions.assertFalse(fireStationRepository.findById(stationTest1).isPresent());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class FireStationRepositoryTest {
     @Test
     public void addMappingFireStationAddress_WhenNonExistingFireStation () {
         int nbFireStations = fireStationRepository.getListFireStations().size();
-        fireStationRepository.addMappingFiresStationAddress(newFireStationTest,addressTest);
+        fireStationRepository.addMappingFiresStationAddress(newStationTest,addressTest);
         Assertions.assertEquals(nbFireStations+1,fireStationRepository.getListFireStations().size());
     }
 }

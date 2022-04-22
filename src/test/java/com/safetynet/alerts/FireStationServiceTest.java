@@ -30,8 +30,8 @@ public class FireStationServiceTest {
 
     static final String addressTest1 = "address1";
     static final String addressTest2 = "address2";
-    static final int fireStationTest1 = 1;
-    static final int fireStationTest2 = 2;
+    static final int stationTest1 = 1;
+    static final int stationTest2 = 2;
 
     static List<FireStation> listFireStationTest = new ArrayList<>();
 
@@ -39,8 +39,8 @@ public class FireStationServiceTest {
     static void listOfFireStationTest() {
         List<String> listAddress = new ArrayList<>();
         listAddress.add(addressTest1);
-        listFireStationTest.add(new FireStation(fireStationTest1,listAddress));
-        listFireStationTest.add(new FireStation(fireStationTest2,listAddress));
+        listFireStationTest.add(new FireStation(stationTest1,listAddress));
+        listFireStationTest.add(new FireStation(stationTest2,listAddress));
     }
 
     @Test
