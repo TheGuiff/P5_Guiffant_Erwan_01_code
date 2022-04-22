@@ -2,10 +2,15 @@ package com.safetynet.alerts.web.controller;
 
 import com.safetynet.alerts.domain.service.MedicalRecordService;
 import com.safetynet.alerts.web.dto.MedicalRecordDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @RestController
+@Slf4j
 @RequestMapping("/medicalRecord")
 public class MedicalRecordController {
 
@@ -13,21 +18,35 @@ public class MedicalRecordController {
     MedicalRecordService medicalRecordService;
 
     @PostMapping("")
-    public MedicalRecordDto addMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
-        return medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDto.getFirstName(),
-                medicalRecordDto.getLastName(),
-                medicalRecordDto.getBirthdate(),
-                medicalRecordDto.getMedications(),
-                medicalRecordDto.getAllergies()));
+    public ResponseEntity<?> addMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
+        log.info("add medical record");
+        try {
+            medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDto.getFirstName(),
+                    medicalRecordDto.getLastName(),
+                    medicalRecordDto.getBirthdate(),
+                    medicalRecordDto.getMedications(),
+                    medicalRecordDto.getAllergies()));
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e){
+            log.error("POST /medicalRecord error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("")
-    public MedicalRecordDto updateMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
-        return medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDto.getFirstName(),
-                medicalRecordDto.getLastName(),
-                medicalRecordDto.getBirthdate(),
-                medicalRecordDto.getMedications(),
-                medicalRecordDto.getAllergies()));
+    public ResponseEntity<?> updateMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
+        log.info("update medical record");
+        try {
+            medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDto.getFirstName(),
+                    medicalRecordDto.getLastName(),
+                    medicalRecordDto.getBirthdate(),
+                    medicalRecordDto.getMedications(),
+                    medicalRecordDto.getAllergies()));
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e){
+            log.error("PUT /medicalRecord error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("")

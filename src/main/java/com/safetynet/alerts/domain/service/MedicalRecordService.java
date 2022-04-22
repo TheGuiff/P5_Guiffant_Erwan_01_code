@@ -25,7 +25,7 @@ public class MedicalRecordService {
     }
 
     public Person saveMedicalRecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
-        return medicalRecordRepository.save(firstName, lastName, birthdate, medications, allergies);
+        return medicalRecordRepository.saveMedicalRecord(firstName, lastName, birthdate, medications, allergies);
     }
 
     public void deleteMedicalRecord(String firstName, String lastName) {
