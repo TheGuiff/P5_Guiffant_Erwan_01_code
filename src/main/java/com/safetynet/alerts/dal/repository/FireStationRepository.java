@@ -21,7 +21,7 @@ public class FireStationRepository {
 
     public Optional<FireStation> findById (int number) {
         return this.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getNumber() == number)
+                .filter(fireStation -> fireStation.getStation() == number)
                 .findFirst();
     }
 
@@ -29,7 +29,7 @@ public class FireStationRepository {
         Optional<FireStation> optionalFireStation = findById(number);
         optionalFireStation.orElseThrow(NoSuchElementException::new);
         this.setListFireStations(this.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getNumber() != number)
+                .filter(fireStation -> fireStation.getStation() != number)
                 .collect(Collectors.toList()));
     }
 
@@ -46,7 +46,7 @@ public class FireStationRepository {
         if (optionalFireStation.isPresent()) {
             this.setListFireStations(this.getListFireStations().stream()
                     .peek(fireStation -> {
-                        if (fireStation.getNumber() == number) {
+                        if (fireStation.getStation() == number) {
                             List<String> listAddresses = fireStation.getAddresses();
                             listAddresses.add(address);
                             fireStation.setAddresses(listAddresses);

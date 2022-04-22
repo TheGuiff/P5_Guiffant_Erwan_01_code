@@ -68,7 +68,7 @@ public class FireStationRepositoryTest {
     public void addMappingFireStationAddress_WhenExistingFireStation () {
         int nbAddresses = fireStationRepository.getListFireStations().get(0).getAddresses().size();
         int nbFireStations = fireStationRepository.getListFireStations().size();
-        fireStationRepository.addMappingFiresStationAddress(fireStationRepository.getListFireStations().get(0).getNumber(),addressTest);
+        fireStationRepository.addMappingFiresStationAddress(fireStationRepository.getListFireStations().get(0).getStation(),addressTest);
         Assertions.assertEquals(nbFireStations,fireStationRepository.getListFireStations().size());
         Assertions.assertEquals(nbAddresses+1,fireStationRepository.getListFireStations().get(0).getAddresses().size());
         Assertions.assertTrue(fireStationRepository.getListFireStations().get(0).getAddresses().contains(addressTest));

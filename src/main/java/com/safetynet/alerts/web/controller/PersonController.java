@@ -12,23 +12,24 @@ import java.util.NoSuchElementException;
 
 @RestController
 @Slf4j
+@RequestMapping("/person")
 public class PersonController {
 
     @Autowired
     PersonService personService;
 
-    @GetMapping("/person")
-    public List<PersonDto> getPersons() {
+    @GetMapping("")
+    public List<PersonDto> getListPersons() {
         return personService.listPersonToPersonDto(personService.getPersons());
     }
 
-    @GetMapping("/person/{firstName}/{lastName}")
-    public PersonDto getPerson(@PathVariable("firstName") final String firstName,
-                               @PathVariable("lastName") final String lastName) {
+    @GetMapping("/{firstName},{lastName}")
+    public PersonDto getPersonByFirstNameAndLastName(@PathVariable("firstName") final String firstName,
+                                                     @PathVariable("lastName") final String lastName) {
         return personService.personToPersonDto(personService.getPerson(firstName, lastName));
     }
 
-    @DeleteMapping("/person") //Idem au-dessus
+    @DeleteMapping("") //Idem au-dessus
     public ResponseEntity<?> deletePerson(@RequestParam("firstName") final String firstName,
                                        @RequestParam("lastName") final String lastName) {
         log.info("");
@@ -41,16 +42,26 @@ public class PersonController {
         }
     }
 
-    @PostMapping("person/{firstName},{lastName},{address},{city},{zip},{phone},{email}")
-    @PutMapping("person/{firstName},{lastName},{address},{city},{zip},{phone},{email}")
-    public PersonDto savePerson(@PathVariable("firstName") final String firstName,
-                                @PathVariable("lastName") final String lastName,
-                                @PathVariable("address") final String address,
-                                @PathVariable("city") final String city,
-                                @PathVariable("zip") final String zip,
-                                @PathVariable("phone") final String phone,
-                                @PathVariable("email") final String email) {
-        return personService.personToPersonDto(personService.savePerson(firstName, lastName, address, city, zip, phone, email));
+    @PostMapping("")
+    public PersonDto addPerson(@RequestBody PersonDto personDto) {
+        return personService.personToPersonDto(personService.savePerson(personDto.getFirstName(),
+                personDto.getLastName(),
+                personDto.getAddress(),
+                personDto.getCity(),
+                personDto.getZip(),
+                personDto.getPhone(),
+                personDto.getEmail()));
+    }
+
+    @PutMapping("")
+    public PersonDto updatePerson(@RequestBody PersonDto personDto) {
+        return personService.personToPersonDto(personService.savePerson(personDto.getFirstName(),
+                personDto.getLastName(),
+                personDto.getAddress(),
+                personDto.getCity(),
+                personDto.getZip(),
+                personDto.getPhone(),
+                personDto.getEmail()));
     }
 
 }

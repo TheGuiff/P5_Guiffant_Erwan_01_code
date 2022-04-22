@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class FireStationDto {
 
-    private int number;
+    private int station;
     private List<String> adresses;
 
 }
