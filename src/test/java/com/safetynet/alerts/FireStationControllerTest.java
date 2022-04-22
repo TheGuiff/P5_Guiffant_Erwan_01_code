@@ -22,7 +22,6 @@ public class FireStationControllerTest {
 
     static final String endpointTestForGet = "/firestation";
     static final String endpointTestForGetAndDelete = "/firestation/1";
-    static final String endpointTestForDeleteMappingAddress = "/firestation/addressTest";
     static final String endpointTestMappingFireStationAddress = "/firestation/1,addressTest";
 
     @Test
@@ -51,7 +50,7 @@ public class FireStationControllerTest {
 
     @Test
     public void testDeleteMappingAddress() throws Exception {
-        mockMvc.perform(delete(endpointTestForDeleteMappingAddress))
+        mockMvc.perform(delete("/firestation").content("{address=\"address test\"}"))
                 .andExpect(status().isOk());
     }
 

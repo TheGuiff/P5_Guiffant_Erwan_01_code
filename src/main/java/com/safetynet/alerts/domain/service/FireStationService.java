@@ -46,7 +46,7 @@ public class FireStationService {
 
     public FireStationDto fireStationToFireStationDto (FireStation fireStation) {
         FireStationDto fireStationDto = new FireStationDto();
-        fireStationDto.setNumber(fireStation.getNumber());
+        fireStationDto.setStation(fireStation.getStation());
         fireStationDto.setAdresses(fireStation.getAddresses());
         return fireStationDto;
     }
@@ -57,7 +57,7 @@ public class FireStationService {
 
     public List<String> listAddressesByNUmber (int number) throws NoSuchElementException {
         Optional<List<String>> optionalStrings = fireStationRepository.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getNumber() == number)
+                .filter(fireStation -> fireStation.getStation() == number)
                 .map(FireStation::getAddresses)
                 .findFirst();
         return optionalStrings.orElseThrow(NoSuchElementException::new);

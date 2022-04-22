@@ -47,7 +47,7 @@ public class FireStationServiceTest {
     public void fireStationToFireStationDtoTest() {
         FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(listFireStationTest.get(0));
         //Then
-        assertEquals(listFireStationTest.get(0).getNumber(),fireStationDto.getNumber());
+        assertEquals(listFireStationTest.get(0).getStation(),fireStationDto.getStation());
         assertEquals(listFireStationTest.get(0).getAddresses(),fireStationDto.getAdresses());
     }
 
@@ -75,18 +75,18 @@ public class FireStationServiceTest {
     @Test
     public void getFireStationByIdOk () {
         try {
-            when(fireStationRepository.findById(listFireStationTest.get(0).getNumber())).thenReturn(Optional.of(listFireStationTest.get(0)));
+            when(fireStationRepository.findById(listFireStationTest.get(0).getStation())).thenReturn(Optional.of(listFireStationTest.get(0)));
         } catch (Exception e) {
             e.printStackTrace();
             throw  new RuntimeException("Failed to set up test mock objects");
         }
-        assertEquals(listFireStationTest.get(0).getNumber(),
-                fireStationService.getFireStation(listFireStationTest.get(0).getNumber()).getNumber());
+        assertEquals(listFireStationTest.get(0).getStation(),
+                fireStationService.getFireStation(listFireStationTest.get(0).getStation()).getStation());
     }
 
     @Test
     public void deleteMappingFireStationTest () {
-        int number = listFireStationTest.get(0).getNumber();
+        int number = listFireStationTest.get(0).getStation();
         fireStationService.deleteMappingFireStation(number);
         verify(fireStationRepository, Mockito.times(1))
                 .deleteMappingFireStation(number);
@@ -102,7 +102,7 @@ public class FireStationServiceTest {
 
     @Test
     public void addMappingFireStationAddressTest () {
-        int number = listFireStationTest.get(0).getNumber();
+        int number = listFireStationTest.get(0).getStation();
         fireStationService.addMappingFiresStationAddress(number, addressTest2);
         verify(fireStationRepository, Mockito.times(1))
                 .addMappingFiresStationAddress(number, addressTest2);

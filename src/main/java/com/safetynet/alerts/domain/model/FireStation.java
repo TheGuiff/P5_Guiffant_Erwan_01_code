@@ -9,22 +9,22 @@ import java.util.List;
 @Setter
 public class FireStation {
 
-    private int number;
+    private int station;
     private List<String> addresses;
 
     public FireStation (int number,
                         List<String> addresses) {
-        this.setNumber(number);
+        this.setStation(number);
         this.setAddresses(addresses);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof FireStation &&  ((FireStation) obj).getNumber() == this.getNumber();
+        return obj instanceof FireStation &&  ((FireStation) obj).getStation() == this.getStation();
     }
 
     @Override
     public int hashCode() {
-        return this.getNumber();
+        return this.getStation();
     }
 }
