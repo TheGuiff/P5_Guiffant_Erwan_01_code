@@ -29,8 +29,14 @@ public class PersonRepository {
 
     public void delete(String firsName, String lastName) {
         Optional<Person> optionalPerson = findById(firsName, lastName);
-        optionalPerson.orElseThrow(() -> new NoSuchElementException("erreur"));
+        optionalPerson.orElseThrow(() -> new NoSuchElementException("Unknown person with this firstname and lastname"));
         this.listPersons.remove(optionalPerson.get());
+    }
+
+    public Person update (Person person) {
+        Optional<Person> oldPerson = findById(person.getFirstName(), person.getLastName());
+        oldPerson.orElseThrow(() -> new NoSuchElementException("Unknown person with this firstname and lastname"));
+        return save(person);
     }
 
     public Person save (Person person) {

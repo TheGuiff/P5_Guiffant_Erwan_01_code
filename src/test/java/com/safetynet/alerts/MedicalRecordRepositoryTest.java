@@ -5,7 +5,6 @@ import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +51,7 @@ public class MedicalRecordRepositoryTest {
     @Test
     public void createMedicalRecordTest () {
         numberOfPersonsBeforeTest = personRepository.getListPersons().size();
-        Person person = medicalRecordRepository.saveMedicalRecord(firstNameTest, lastNameTest, birthdateTest1, listMedications, listAllergies);
+        Person person = medicalRecordRepository.save(firstNameTest, lastNameTest, birthdateTest1, listMedications, listAllergies);
         Assertions.assertEquals(numberOfPersonsBeforeTest, personRepository.getListPersons().size());
         Assertions.assertEquals(firstNameTest, person.getFirstName());
         Assertions.assertEquals(lastNameTest, person.getLastName());
@@ -67,7 +66,7 @@ public class MedicalRecordRepositoryTest {
     public void updateMedicalRecordTest () {
         numberOfPersonsBeforeTest = personRepository.getListPersons().size();
         Person personTest = personRepository.getListPersons().get(0);
-        Person person = medicalRecordRepository.saveMedicalRecord(personTest.getFirstName(), personTest.getLastName(), birthdateTest1, listMedications, listAllergies);
+        Person person = medicalRecordRepository.save(personTest.getFirstName(), personTest.getLastName(), birthdateTest1, listMedications, listAllergies);
         Assertions.assertEquals(numberOfPersonsBeforeTest, personRepository.getListPersons().size());
         Assertions.assertEquals(personTest.getFirstName(), person.getFirstName());
         Assertions.assertEquals(personTest.getLastName(), person.getLastName());

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 
@@ -32,7 +33,7 @@ public class PersonRepositoryTest {
 
     @Test
     public void testPersonNotInListIsKo () {
-        Assertions.assertFalse(personRepository.findById("Test","KO").isPresent());
+        Assertions.assertThrows(NoSuchElementException.class,() -> personRepository.findById("Test","KO"));
     }
 
     @Test

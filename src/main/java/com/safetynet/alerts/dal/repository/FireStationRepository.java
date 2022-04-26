@@ -27,10 +27,8 @@ public class FireStationRepository {
 
     public void deleteMappingFireStation(int station) throws NoSuchElementException {
         Optional<FireStation> optionalFireStation = findById(station);
-        optionalFireStation.orElseThrow(NoSuchElementException::new);
-        this.setListFireStations(this.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getStation() != station)
-                .collect(Collectors.toList()));
+        optionalFireStation.orElseThrow(() -> new NoSuchElementException("Unknown firestation with this number"));
+        this.listFireStations.remove(optionalFireStation.get());
     }
 
     public void deleteMappingAddress(String address) {
@@ -43,6 +41,7 @@ public class FireStationRepository {
 
     public FireStation addMappingFiresStationAddress(int station, String address) {
         Optional<FireStation> optionalFireStation = findById(station);
+        FireStation fireStationOut;
         if (optionalFireStation.isPresent()) {
             this.setListFireStations(this.getListFireStations().stream()
                     .peek(fireStation -> {
@@ -53,12 +52,14 @@ public class FireStationRepository {
                         }
                     })
                     .collect(Collectors.toList()));
+            fireStationOut = optionalFireStation.get();
         } else {
             List<String> addresses = new ArrayList<>();
             addresses.add(address);
             FireStation fireStation = new FireStation(station, addresses);
             this.listFireStations.add(fireStation);
+            fireStationOut = fireStation;
         }
-        return findById(station).get();
+        return fireStationOut;
     }
 }

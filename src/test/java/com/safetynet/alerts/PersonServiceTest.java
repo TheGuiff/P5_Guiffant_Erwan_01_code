@@ -84,7 +84,7 @@ public class PersonServiceTest {
             throw  new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
-        List<Person> listPerson = personService.getPersons();
+        List<Person> listPerson = personService.getListPersons();
         //THEN
         assertEquals(2,listPerson.size());
     }
@@ -99,7 +99,7 @@ public class PersonServiceTest {
             throw  new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
-        Person person = personService.getPerson(personTest1.getFirstName(), personTest1.getLastName());
+        Person person = personService.getPersonByFirstNameAndLastName(personTest1.getFirstName(), personTest1.getLastName());
         //THEN
         assertEquals(personTest1.getFirstName(), person.getFirstName());
         assertEquals(personTest1.getLastName(),person.getLastName());

@@ -19,7 +19,7 @@ public class MedicalRecordController {
 
     @PostMapping("")
     public ResponseEntity<?> addMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
-        log.info("add medical record");
+        log.info("add medical record for " + medicalRecordDto.getFirstName() + " " + medicalRecordDto.getLastName());
         try {
             medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDto.getFirstName(),
                     medicalRecordDto.getLastName(),
@@ -35,7 +35,7 @@ public class MedicalRecordController {
 
     @PutMapping("")
     public ResponseEntity<?> updateMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
-        log.info("update medical record");
+        log.info("update medical record for "+ medicalRecordDto.getFirstName() + " " + medicalRecordDto.getLastName());
         try {
             medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDto.getFirstName(),
                     medicalRecordDto.getLastName(),
@@ -51,7 +51,12 @@ public class MedicalRecordController {
 
     @DeleteMapping("")
     public void deleteMedicalRecord(@RequestParam("firstname") String firstName,
-                                             @RequestParam("lastname") String lastName) {
-        medicalRecordService.deleteMedicalRecord(firstName, lastName);
+                                    @RequestParam("lastname") String lastName) {
+        log.info("delete medical record for "+ firstName + " " + lastName);
+        try {
+            medicalRecordService.deleteMedicalRecord(firstName, lastName);
+        } catch (NoSuchElementException e) {
+            log.error("DELETE /medicalRecord error:{}",e.getMessage());
+        }
     }
 }
