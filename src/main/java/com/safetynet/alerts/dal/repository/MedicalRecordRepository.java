@@ -17,16 +17,16 @@ public class MedicalRecordRepository {
     PersonRepository personRepository;
 
     public Person save(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
-        Optional<Person> person = personRepository.findById(firstName, lastName);
-        person.orElseThrow(() -> new NoSuchElementException(("Unknown person for creation ou update medical record")));
         personRepository.setListPersons(personRepository.getListPersons().stream()
                 .peek(p -> {if (Objects.equals(p.getFirstName(), firstName) && Objects.equals(p.getLastName(), lastName)) {
-                    p.setBirthdate(person.get().getBirthdate());
-                    p.setAllergies(person.get().getAllergies());
-                    p.setMedications(person.get().getMedications());
+                    p.setBirthdate(birthdate);
+                    p.setAllergies(allergies);
+                    p.setMedications(medications);
                 }
                 })
                 .collect(Collectors.toList()));
+        Optional<Person> person = personRepository.findById(firstName, lastName);
+        person.orElseThrow(() -> new NoSuchElementException(("Unknown person for creation ou update medical record")));
         return person.get();
     }
 

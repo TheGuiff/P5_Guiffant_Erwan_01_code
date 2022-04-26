@@ -21,28 +21,40 @@ public class MedicalRecordControllerTest {
     @MockBean
     MedicalRecordService medicalRecordService;
 
-    static final String endpointTestForAddAndUpdate = "/medicalRecord/";
-    static final String endpointTestForDelete = "/medicalRecord/Test,Test";
+    static final String endpointTest = "/medicalRecord/";
+    static final String endpointForDeleteTest = "/medicalRecord?firstName=John&lastName=Boyd";
+    static final String endpointForDeleteKoTest = "/medicalRecord?firstName=John&lastName=BoydTest";
+    static final String contentTest = " { \"firstName\":\"John\", \n" +
+            " \"lastName\":\"Boyd\", \n" +
+            " \"birthdate\":\"03/06/1984\", \n" +
+            " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
+            " \"allergies\":[\"nillacilan\"] }";
+    static final String contentKoTest = " { \"firstName\":\"JohnTest\", \n" +
+            " \"lastName\":\"BoydTest\", \n" +
+            " \"birthdate\":\"03/06/1984\", \n" +
+            " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
+            " \"allergies\":[\"nillacilan\"] }";
+
 
     @Test
-    public void postMedicalRecordTest() throws Exception {
-        mockMvc.perform(post(endpointTestForAddAndUpdate).content(" { \"firstName\":\"John\", \n" +
-                        " \"lastName\":\"Boyd\", \n" +
-                        " \"birthdate\":\"03/06/1984\", \n" +
-                        " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
-                        " \"allergies\":[\"nillacilan\"] }").contentType(MediaType.APPLICATION_JSON))
+    public void postMedicalRecordOkTest() throws Exception {
+        mockMvc.perform(post(endpointTest)
+                        .content(contentTest)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void putMedicalRecordTest() throws Exception {
-        mockMvc.perform(put(endpointTestForAddAndUpdate))
+        mockMvc.perform(put(endpointTest)
+                        .content(contentTest)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void deleteMedicalRecordTest() throws Exception {
-        mockMvc.perform(delete(endpointTestForDelete))
+    public void deleteMedicalRecordOkTest() throws Exception {
+        mockMvc.perform(delete(endpointForDeleteTest))
                 .andExpect(status().isOk());
     }
 

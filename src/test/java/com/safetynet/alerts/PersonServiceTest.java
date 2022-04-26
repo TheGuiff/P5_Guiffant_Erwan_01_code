@@ -16,10 +16,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,7 +37,6 @@ public class PersonServiceTest {
     static final String firsNameTest = "Test";
     static final String lastNameTest1 = "Test1";
     static final String lastNameTest2 = "Test2";
-    static final String lastNameTest3 = "Test3";
     static final String addressTest1 = "address1";
     static final String addressTest2 = "address2";
     static final String cityTest = "city";
@@ -52,6 +51,68 @@ public class PersonServiceTest {
     static void listOfPersonsTest () {
         listPerson.add(personTest1);
         listPerson.add(personTest2);
+    }
+
+    @Test
+    public void getListPersonTest () {
+        //Given
+        try {
+            when(personRepository.findAll()).thenReturn(listPerson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        //WHEN
+        List<Person> listPerson = personService.getListPersons();
+        //THEN
+        assertEquals(2,listPerson.size());
+    }
+
+    @Test
+    public void getPersonByFirstNameAndLastNameTestOk () {
+        //Given
+        try {
+            when(personRepository.findById(personTest1.getFirstName(),personTest1.getLastName())).thenReturn(Optional.of(personTest1));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        //WHEN
+        Person person = personService.getPersonByFirstNameAndLastName(personTest1.getFirstName(), personTest1.getLastName());
+        //THEN
+        assertEquals(personTest1.getFirstName(), person.getFirstName());
+        assertEquals(personTest1.getLastName(),person.getLastName());
+    }
+
+    @Test
+    public void getPersonByFirstNameAndLastNameTestKo () {
+        //Given
+        try {
+            when(personRepository.findById(personTest1.getFirstName(),personTest1.getLastName())).thenReturn(Optional.empty());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        assertThrows(NoSuchElementException.class,()->personService.getPersonByFirstNameAndLastName(personTest1.getFirstName(),
+                personTest1.getLastName()));
+    }
+
+    @Test
+    public void deletePersonTest () {
+        personService.deletePerson(personTest1.getFirstName(), personTest1.getLastName());
+        verify(personRepository, Mockito.times(1)).delete(personTest1.getFirstName(), personTest1.getLastName());
+    }
+
+    @Test
+    public void addPersonTest () {
+        personService.addPerson(firsNameTest, lastNameTest1, addressTest1, cityTest, zipTest, phoneTest, emailTest);
+        verify(personRepository, Mockito.times(1)).save(any(Person.class));
+    }
+
+    @Test
+    public void updatePersonTest () {
+        personService.updatePerson(firsNameTest, lastNameTest1, addressTest1, cityTest, zipTest, phoneTest, emailTest);
+        verify(personRepository, Mockito.times(1)).update(any(Person.class));
     }
 
     @Test
@@ -72,43 +133,6 @@ public class PersonServiceTest {
     public void listPersonToPersonDtoTest() {
         List<PersonDto> personDtoList = personService.listPersonToPersonDto(listPerson);
         assertEquals(2, personDtoList.size());
-    }
-
-    @Test
-    public void getListPersonOk () {
-        //Given
-        try {
-            when(personRepository.findAll()).thenReturn(listPerson);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
-        }
-        //WHEN
-        List<Person> listPerson = personService.getListPersons();
-        //THEN
-        assertEquals(2,listPerson.size());
-    }
-
-    @Test
-    public void getPersonByIdOk () {
-        //Given
-        try {
-            when(personRepository.findById(personTest1.getFirstName(),personTest1.getLastName())).thenReturn(Optional.of(personTest1));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
-        }
-        //WHEN
-        Person person = personService.getPersonByFirstNameAndLastName(personTest1.getFirstName(), personTest1.getLastName());
-        //THEN
-        assertEquals(personTest1.getFirstName(), person.getFirstName());
-        assertEquals(personTest1.getLastName(),person.getLastName());
-    }
-
-    @Test
-    public void deletePersonOk () {
-        personService.deletePerson(personTest1.getFirstName(), personTest1.getLastName());
-        verify(personRepository, Mockito.times(1)).delete(personTest1.getFirstName(), personTest1.getLastName());
     }
 
     @Test

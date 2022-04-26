@@ -25,8 +25,6 @@ public class MedicalRecordRepositoryTest {
     static final String birthdateTest1 = "birthdate";
     static final String medicationTest1 = "medication";
     static final String allergieTest1 = "allergie";
-    static final String firstNameTest = "Test";
-    static final String lastNameTest = "Test1";
     static List<String> listMedications = new ArrayList<>();
     static List<String> listAllergies = new ArrayList<>();
     static int numberOfPersonsBeforeTest;
@@ -51,10 +49,11 @@ public class MedicalRecordRepositoryTest {
     @Test
     public void createMedicalRecordTest () {
         numberOfPersonsBeforeTest = personRepository.getListPersons().size();
-        Person person = medicalRecordRepository.save(firstNameTest, lastNameTest, birthdateTest1, listMedications, listAllergies);
+        Person person = medicalRecordRepository.save(personRepository.getListPersons().get(0).getFirstName(),
+                personRepository.getListPersons().get(0).getLastName(), birthdateTest1, listMedications, listAllergies);
         Assertions.assertEquals(numberOfPersonsBeforeTest, personRepository.getListPersons().size());
-        Assertions.assertEquals(firstNameTest, person.getFirstName());
-        Assertions.assertEquals(lastNameTest, person.getLastName());
+        Assertions.assertEquals(personRepository.getListPersons().get(0).getFirstName(), person.getFirstName());
+        Assertions.assertEquals(personRepository.getListPersons().get(0).getLastName(), person.getLastName());
         Assertions.assertEquals(birthdateTest1, person.getBirthdate());
         Assertions.assertEquals(1, person.getMedications().size());
         Assertions.assertEquals(1, person.getAllergies().size());

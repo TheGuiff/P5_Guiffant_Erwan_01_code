@@ -50,13 +50,15 @@ public class MedicalRecordController {
     }
 
     @DeleteMapping("")
-    public void deleteMedicalRecord(@RequestParam("firstname") String firstName,
-                                    @RequestParam("lastname") String lastName) {
+    public ResponseEntity<?> deleteMedicalRecord(@RequestParam("firstName") String firstName,
+                                    @RequestParam("lastName") String lastName) {
         log.info("delete medical record for "+ firstName + " " + lastName);
         try {
             medicalRecordService.deleteMedicalRecord(firstName, lastName);
+            return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             log.error("DELETE /medicalRecord error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 }

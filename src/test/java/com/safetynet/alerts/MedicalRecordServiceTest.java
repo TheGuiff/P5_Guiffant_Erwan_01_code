@@ -62,7 +62,7 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
-    public void personToMedicalRecordDto() {
+    public void personToMedicalRecordDtoTest() {
         //When
         MedicalRecordDto medicalRecordDto = medicalRecordService.personToMedicalRecordDto(personTest1);
         //Then
