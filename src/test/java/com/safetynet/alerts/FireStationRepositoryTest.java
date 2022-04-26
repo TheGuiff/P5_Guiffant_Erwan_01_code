@@ -16,11 +16,9 @@ public class FireStationRepositoryTest {
     @Autowired
     FireStationRepository fireStationRepository;
 
-    static FireStation fireStation;
-    static List<String> listAddresses;
-
     static final String addressTest = "address test";
     static final int stationTest1 = 1;
+    static final int stationTest2 = 2;
     static final int newStationTest = 8;
 
     @Test
@@ -33,7 +31,7 @@ public class FireStationRepositoryTest {
 
     @Test
     public void testFireStationOfListIsOk () {
-        Assertions.assertTrue(fireStationRepository.findById(stationTest1).isPresent());
+        Assertions.assertTrue(fireStationRepository.findById(stationTest2).isPresent());
     }
 
     @Test

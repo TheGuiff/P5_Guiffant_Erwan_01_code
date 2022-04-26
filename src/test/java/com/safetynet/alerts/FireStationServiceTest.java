@@ -13,9 +13,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +33,7 @@ public class FireStationServiceTest {
     static final String addressTest2 = "address2";
     static final int stationTest1 = 1;
     static final int stationTest2 = 2;
+    static final int stationTestKo = 8;
 
     static List<FireStation> listFireStationTest = new ArrayList<>();
 
@@ -44,23 +46,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void fireStationToFireStationDtoTest() {
-        FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(listFireStationTest.get(0));
-        //Then
-        assertEquals(listFireStationTest.get(0).getStation(),fireStationDto.getStation());
-        assertEquals(listFireStationTest.get(0).getAddresses(),fireStationDto.getAdresses());
-    }
-
-    @Test
-    public void listFireStationToFireStationDtoTest() {
-        //When
-        List<FireStationDto> listFireStationDto = fireStationService.listFireStationToFireStationDto(listFireStationTest);
-        //Then
-        assertEquals(2,listFireStationDto.size());
-    }
-
-    @Test
-    public void getListFireStationOk () {
+    public void getFireStationsTest () {
         //Given
         try {
             when(fireStationRepository.findAll()).thenReturn(listFireStationTest);
@@ -69,11 +55,11 @@ public class FireStationServiceTest {
             throw  new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
-        assertEquals(2,fireStationService.getFireStations().size());
+        assertEquals(listFireStationTest.size(),fireStationService.getFireStations().size());
     }
 
     @Test
-    public void getFireStationByIdOk () {
+    public void getFireStationTest () {
         try {
             when(fireStationRepository.findById(listFireStationTest.get(0).getStation())).thenReturn(Optional.of(listFireStationTest.get(0)));
         } catch (Exception e) {
@@ -107,5 +93,61 @@ public class FireStationServiceTest {
         verify(fireStationRepository, Mockito.times(1))
                 .addMappingFiresStationAddress(number, addressTest2);
     }
+
+    @Test
+    public void updateMappingFireStationAddressTest () {
+        int station = listFireStationTest.get(1).getStation();
+        fireStationService.updateMappingFireStationAddress(station, listFireStationTest.get(0).getAddresses().get(0));
+        verify(fireStationRepository, Mockito.times(1))
+                .addMappingFiresStationAddress(station, listFireStationTest.get(0).getAddresses().get(0));
+    }
+
+    @Test
+    public void fireStationToFireStationDtoTest() {
+        FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(listFireStationTest.get(0));
+        //Then
+        assertEquals(listFireStationTest.get(0).getStation(),fireStationDto.getStation());
+        assertEquals(listFireStationTest.get(0).getAddresses(),fireStationDto.getAdresses());
+    }
+
+    @Test
+    public void listFireStationToFireStationDtoTest() {
+        //When
+        List<FireStationDto> listFireStationDto = fireStationService.listFireStationToFireStationDto(listFireStationTest);
+        //Then
+        assertEquals(listFireStationTest.size(),listFireStationDto.size());
+    }
+
+    @Test
+    public void listAddressesByStationTestOk () {
+        try {
+            when(fireStationRepository.findById(stationTest1)).thenReturn(Optional.of(listFireStationTest.get(0)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        List<String> listAddressesTest = fireStationService.listAddressesByStation(stationTest1);
+        assertEquals(listFireStationTest.get(0).getAddresses().size(), listAddressesTest.size());
+        assertEquals(listFireStationTest.get(0).getAddresses().get(0), listAddressesTest.get(0));
+    }
+
+    @Test
+    public void listAddressesByStationTestKo () {
+        try {
+            when(fireStationRepository.findById(stationTestKo)).thenReturn(Optional.empty());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        assertThrows(NoSuchElementException.class,() -> fireStationService.listAddressesByStation(stationTestKo));
+    }
+
+
+
+
+
+
+
+
 
 }

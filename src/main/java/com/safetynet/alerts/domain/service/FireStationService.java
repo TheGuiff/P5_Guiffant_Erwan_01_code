@@ -53,7 +53,7 @@ public class FireStationService {
         return listFireStation.stream().map(this::fireStationToFireStationDto).collect(Collectors.toList());
     }
 
-    public List<String> listAddressesByNUmber (int station) throws NoSuchElementException {
+    public List<String> listAddressesByStation(int station) {
         Optional<FireStation> optionalFireStation = fireStationRepository.findById(station);
         optionalFireStation.orElseThrow(() -> new NoSuchElementException("No Firestation with this number"));
         return optionalFireStation.get().getAddresses();

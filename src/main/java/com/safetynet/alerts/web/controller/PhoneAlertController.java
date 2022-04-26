@@ -20,7 +20,7 @@ public class PhoneAlertController {
     FireStationService fireStationService;
 
     @GetMapping("")
-    public PhoneAlertDto phoneAlert(@RequestParam("station") int station) {
-        return personService.listPersonToPhoneAlertDto(personService.listPersonsByListAddresses(fireStationService.listAddressesByNUmber(station)));
+    public PhoneAlertDto phoneAlert(@RequestParam("firestation") int station) {
+        return personService.listPersonToPhoneAlertDto(personService.listPersonsByListAddresses(fireStationService.listAddressesByStation(station)));
     }
 }

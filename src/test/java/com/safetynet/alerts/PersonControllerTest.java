@@ -5,13 +5,11 @@ import com.safetynet.alerts.web.controller.PersonController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = PersonController.class)
@@ -23,30 +21,54 @@ public class PersonControllerTest {
     @MockBean
     private PersonService personService;
 
-    static final String endpointTestForGetAndDelete = "/person/Test,Test";
-    static final String endpointTestForCreate = "/person/Test,Test,,,,,,";
+    static final String endpointTest = "/person";
+    static final String endpointGetAndDeleteTest = "/person?firstName=John&lastName=Boyd";
+    static final String contentAdd = "{ \"firstName\":\"John\", \n" +
+            " \"lastName\":\"BoydTest\", \n" +
+            " \"address\":\"address\", \n" +
+            " \"city\":\"city\", \n" +
+            " \"zip\":\"zip\", \n" +
+            " \"phone\":\"phone\", \n" +
+            " \"email\":\"email\" }";
+    static final String contentUpdate = "{ \"firstName\":\"John\", \n" +
+            " \"lastName\":\"Boyd\", \n" +
+            " \"address\":\"address\", \n" +
+            " \"city\":\"city\", \n" +
+            " \"zip\":\"zip\", \n" +
+            " \"phone\":\"phone\", \n" +
+            " \"email\":\"email\" }";
 
     @Test
-    public void testGetPersons() throws Exception {
-        mockMvc.perform(get("/person"))
+    public void getListPersonsTest() throws Exception {
+        mockMvc.perform(get(endpointTest))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetPerson() throws Exception {
-        mockMvc.perform(get(endpointTestForGetAndDelete))
+    public void getPersonByFirstNameAndLastNameTest() throws Exception {
+        mockMvc.perform(get(endpointGetAndDeleteTest))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testDeletePerson() throws Exception {
-        mockMvc.perform(delete(endpointTestForGetAndDelete))
+    public void deletePersonTest() throws Exception {
+        mockMvc.perform(delete(endpointGetAndDeleteTest))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testSavePerson() throws Exception {
-        mockMvc.perform(post(endpointTestForCreate))
+    public void addPersonTest() throws Exception {
+        mockMvc.perform(post(endpointTest)
+                        .content(contentAdd)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updatePersonTest() throws Exception {
+        mockMvc.perform(put(endpointTest)
+                        .content(contentUpdate)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 

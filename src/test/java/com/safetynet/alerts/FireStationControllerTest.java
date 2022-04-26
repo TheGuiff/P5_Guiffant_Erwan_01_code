@@ -20,43 +20,46 @@ public class FireStationControllerTest {
     @MockBean
     private FireStationService fireStationService;
 
-    static final String endpointTestForGet = "/firestation";
-    static final String endpointTestForGetAndDelete = "/firestation/1";
-    static final String endpointTestMappingFireStationAddress = "/firestation/1,addressTest";
+    static final String endpointTest = "/firestation";
+    static final String endpointTestForGet = "/firestation?station=1";
+    static final String endpointForDelete = "/firestation/2";
+    static final String endpointForDeleteAddress = "/firestation?address=\"1509 Culver St\"";
+    static final String endpointTestMappingFireStationAddress = "/firestation?station=1&address=\"address test\"";
 
     @Test
-    public void testGetFireStations() throws Exception {
+    public void getFireStationsTest() throws Exception {
+        mockMvc.perform(get(endpointTest))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getFireStationTest() throws Exception {
         mockMvc.perform(get(endpointTestForGet))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetFireStation() throws Exception {
-        mockMvc.perform(get(endpointTestForGetAndDelete))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testAddMappingFireStationAddress() throws Exception {
+    public void addMappingFireStationAddressTest() throws Exception {
         mockMvc.perform(post(endpointTestMappingFireStationAddress))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testDeleteMappingFireStation() throws Exception {
-        mockMvc.perform(delete(endpointTestForGetAndDelete))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testDeleteMappingAddress() throws Exception {
-        mockMvc.perform(delete("/firestation").content("{address=\"address test\"}"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testUpdateMappingFireStationAddress() throws Exception {
+    public void updateMappingFireStationAddressTest() throws Exception {
         mockMvc.perform(put(endpointTestMappingFireStationAddress))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void deleteMappingFireStationTest() throws Exception {
+        mockMvc.perform(delete(endpointForDelete))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteMappingAddressTest() throws Exception {
+        mockMvc.perform(delete(endpointForDeleteAddress))
+                .andExpect(status().isOk());
+    }
+
 }
