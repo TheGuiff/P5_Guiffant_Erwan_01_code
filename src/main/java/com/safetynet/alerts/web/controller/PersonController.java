@@ -20,19 +20,26 @@ public class PersonController {
 
     @GetMapping("")
     public List<PersonDto> getListPersons() {
-        return personService.listPersonToPersonDto(personService.getPersons());
+        return personService.listPersonToPersonDto(personService.getListPersons());
     }
 
     @GetMapping("/{firstName},{lastName}")
-    public PersonDto getPersonByFirstNameAndLastName(@PathVariable("firstName") final String firstName,
+    public ResponseEntity<?> getPersonByFirstNameAndLastName(@PathVariable("firstName") final String firstName,
                                                      @PathVariable("lastName") final String lastName) {
-        return personService.personToPersonDto(personService.getPerson(firstName, lastName));
+        log.info("get person by firstname (" + firstName + ") and lastname (" + lastName + ")");
+        try {
+            personService.personToPersonDto(personService.getPersonByFirstNameAndLastName(firstName, lastName));
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            log.error("GET /person error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("") //Idem au-dessus
     public ResponseEntity<?> deletePerson(@RequestParam("firstName") final String firstName,
                                        @RequestParam("lastName") final String lastName) {
-        log.info("");
+        log.info("delete person by firstname (" + firstName + ") and lastname (" + lastName + ")");
         try {
             personService.deletePerson(firstName, lastName);
             return ResponseEntity.ok().build();
@@ -44,24 +51,32 @@ public class PersonController {
 
     @PostMapping("")
     public PersonDto addPerson(@RequestBody PersonDto personDto) {
-        return personService.personToPersonDto(personService.savePerson(personDto.getFirstName(),
-                personDto.getLastName(),
-                personDto.getAddress(),
-                personDto.getCity(),
-                personDto.getZip(),
-                personDto.getPhone(),
-                personDto.getEmail()));
+        log.info("save person with firstname (" + personDto.getFirstName() + ") and lastname (" + personDto.getLastName() + ")");
+        return personService.personToPersonDto(personService.addPerson(personDto.getFirstName(),
+                    personDto.getLastName(),
+                    personDto.getAddress(),
+                    personDto.getCity(),
+                    personDto.getZip(),
+                    personDto.getPhone(),
+                    personDto.getEmail()));
     }
 
     @PutMapping("")
-    public PersonDto updatePerson(@RequestBody PersonDto personDto) {
-        return personService.personToPersonDto(personService.savePerson(personDto.getFirstName(),
-                personDto.getLastName(),
-                personDto.getAddress(),
-                personDto.getCity(),
-                personDto.getZip(),
-                personDto.getPhone(),
-                personDto.getEmail()));
+    public ResponseEntity<?> updatePerson(@RequestBody PersonDto personDto) {
+        log.info("update person with firstname (" + personDto.getFirstName() + ") and lastname (" + personDto.getLastName() + ")");
+        try {
+            personService.personToPersonDto(personService.updatePerson(personDto.getFirstName(),
+                    personDto.getLastName(),
+                    personDto.getAddress(),
+                    personDto.getCity(),
+                    personDto.getZip(),
+                    personDto.getPhone(),
+                    personDto.getEmail()));
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            log.error("PUT /person error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

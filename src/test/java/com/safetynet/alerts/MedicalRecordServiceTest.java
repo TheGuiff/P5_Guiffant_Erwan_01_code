@@ -84,6 +84,6 @@ public class MedicalRecordServiceTest {
     @Test
     public void saveMedicalRecordTest () {
         medicalRecordService.saveMedicalRecord(firsNameTest, lastNameTest3,birthdateTest1,listMedications,listAllergies);
-        verify(medicalRecordRepository, Mockito.times(1)).saveMedicalRecord(firsNameTest,lastNameTest3,birthdateTest1,listMedications,listAllergies);
+        verify(medicalRecordRepository, Mockito.times(1)).save(firsNameTest,lastNameTest3,birthdateTest1,listMedications,listAllergies);
     }
 }

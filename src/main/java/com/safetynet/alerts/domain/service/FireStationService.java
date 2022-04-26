@@ -22,9 +22,7 @@ public class FireStationService {
     }
 
     public FireStation getFireStation (int station) {
-        Optional<FireStation> optionalFireStation = fireStationRepository.findById(station);
-        optionalFireStation.orElseThrow(NoSuchElementException::new);
-        return optionalFireStation.get();
+        return fireStationRepository.findById(station).orElseThrow(() -> new NoSuchElementException("No Firestation with this number"));
     }
 
     public void deleteMappingFireStation(int station) {
@@ -56,11 +54,9 @@ public class FireStationService {
     }
 
     public List<String> listAddressesByNUmber (int station) throws NoSuchElementException {
-        Optional<List<String>> optionalStrings = fireStationRepository.getListFireStations().stream()
-                .filter(fireStation -> fireStation.getStation() == station)
-                .map(FireStation::getAddresses)
-                .findFirst();
-        return optionalStrings.orElseThrow(NoSuchElementException::new);
+        Optional<FireStation> optionalFireStation = fireStationRepository.findById(station);
+        optionalFireStation.orElseThrow(() -> new NoSuchElementException("No Firestation with this number"));
+        return optionalFireStation.get().getAddresses();
     }
 
 }

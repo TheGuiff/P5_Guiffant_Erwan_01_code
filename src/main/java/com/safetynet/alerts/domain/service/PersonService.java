@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,21 +17,19 @@ public class PersonService {
     @Autowired
     PersonRepository personRepository;
 
-    public List<Person> getPersons () {
+    public List<Person> getListPersons() {
         return personRepository.findAll();
     }
 
-    public Person getPerson (String firsName, String lastName) {
-        Optional<Person> optionalPerson = personRepository.findById(firsName, lastName);
-        optionalPerson.orElseThrow(NoSuchElementException::new);
-        return optionalPerson.get();
+    public Person getPersonByFirstNameAndLastName(String firsName, String lastName) {
+        return personRepository.findById(firsName, lastName).orElseThrow(() -> new NoSuchElementException("Unknown person with this firstname and lastname"));
     }
 
     public void deletePerson(String firstName, String lastName) {
         personRepository.delete(firstName, lastName);
     }
 
-    public Person savePerson (String firstName,
+    public Person addPerson (String firstName,
                               String lastName,
                               String address,
                               String city,
@@ -40,6 +37,16 @@ public class PersonService {
                               String phone,
                               String email) {
         return personRepository.save(new Person(firstName, lastName, address, city, zip, phone, email));
+    }
+
+    public Person updatePerson (String firstName,
+                             String lastName,
+                             String address,
+                             String city,
+                             String zip,
+                             String phone,
+                             String email) {
+        return personRepository.update(new Person(firstName, lastName, address, city, zip, phone, email));
     }
 
     public PersonDto personToPersonDto (Person person) {
