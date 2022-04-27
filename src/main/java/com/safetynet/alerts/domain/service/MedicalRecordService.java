@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class MedicalRecordService {
@@ -22,6 +23,10 @@ public class MedicalRecordService {
         medicalRecordDto.setMedications(person.getMedications());
         medicalRecordDto.setAllergies(person.getAllergies());
         return medicalRecordDto;
+    }
+
+    public MedicalRecordDto getMedicalRecordByFirstNameAndLastName(String firsName, String lastName) {
+        return medicalRecordRepository.findById(firsName, lastName).orElseThrow(() -> new NoSuchElementException("Unknown person with this firstname and lastname"));
     }
 
     public Person saveMedicalRecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {

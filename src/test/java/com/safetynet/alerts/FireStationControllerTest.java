@@ -4,7 +4,9 @@ import com.safetynet.alerts.domain.service.FireStationService;
 import com.safetynet.alerts.web.controller.FireStationController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,7 +23,8 @@ public class FireStationControllerTest {
     private FireStationService fireStationService;
 
     static final String endpointTest = "/firestation";
-    static final String endpointTestForGet = "/firestation?station=1";
+    static final String endpointTestForGet = "/firestation/1";
+    static final String endpointTestForGetKo = "/firestation/8";
     static final String endpointForDelete = "/firestation/2";
     static final String endpointForDeleteAddress = "/firestation?address=\"1509 Culver St\"";
     static final String endpointTestMappingFireStationAddress = "/firestation?station=1&address=\"address test\"";
@@ -37,6 +40,12 @@ public class FireStationControllerTest {
         mockMvc.perform(get(endpointTestForGet))
                 .andExpect(status().isOk());
     }
+
+    /*@Test
+    public void getFireStationTestKo() throws Exception {
+        mockMvc.perform(get(endpointTestForGetKo))
+                .andExpect(status().isNotFound());
+    }*/
 
     @Test
     public void addMappingFireStationAddressTest() throws Exception {
