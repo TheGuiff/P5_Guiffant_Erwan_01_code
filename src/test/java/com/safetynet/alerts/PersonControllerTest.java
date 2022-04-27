@@ -22,7 +22,8 @@ public class PersonControllerTest {
     private PersonService personService;
 
     static final String endpointTest = "/person";
-    static final String endpointGetAndDeleteTest = "/person?firstName=John&lastName=Boyd";
+    static final String endpointForGetTest = "/person/John,Boyd";
+    static final String endpointForDeleteTest = "/person?firstName=John&lastName=Boyd";
     static final String contentAdd = "{ \"firstName\":\"John\", \n" +
             " \"lastName\":\"BoydTest\", \n" +
             " \"address\":\"address\", \n" +
@@ -46,13 +47,13 @@ public class PersonControllerTest {
 
     @Test
     public void getPersonByFirstNameAndLastNameTest() throws Exception {
-        mockMvc.perform(get(endpointGetAndDeleteTest))
+        mockMvc.perform(get(endpointForGetTest))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void deletePersonTest() throws Exception {
-        mockMvc.perform(delete(endpointGetAndDeleteTest))
+        mockMvc.perform(delete(endpointForDeleteTest))
                 .andExpect(status().isOk());
     }
 

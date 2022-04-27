@@ -41,6 +41,11 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    public void personByFirstNameAndLastNameTestKo () {
+        Assertions.assertFalse(personRepository.findById("Test","TestKO").isPresent());
+    }
+
+    @Test
     public void deletePersonTestOk () {
         String firstNameToDelete = personRepository.getListPersons().get(0).getFirstName();
         String lastNameToDelete = personRepository.getListPersons().get(0).getLastName();

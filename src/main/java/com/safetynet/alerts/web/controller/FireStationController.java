@@ -27,8 +27,8 @@ public class FireStationController {
     public ResponseEntity<?> getFireStation (@PathVariable("station") final int station) {
         log.info("get firestation number : " + station);
         try {
-            fireStationService.fireStationToFireStationDto(fireStationService.getFireStation(station));
-            return ResponseEntity.ok().build();
+            FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(fireStationService.getFireStation(station));
+            return ResponseEntity.ok(fireStationDto);
         } catch (NoSuchElementException e) {
             log.error("GET /firestation error:{}",e.getMessage());
             return ResponseEntity.notFound().build();
@@ -48,8 +48,14 @@ public class FireStationController {
     }
 
     @DeleteMapping("/{station}")
-    public void deleteMappingStation(@PathVariable("station") final int station) {
-        fireStationService.deleteMappingFireStation(station);
+    public ResponseEntity<?> deleteMappingStation(@PathVariable("station") final int station) {
+        try {
+            fireStationService.deleteMappingFireStation(station);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            log.error("GET /firestation error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("")

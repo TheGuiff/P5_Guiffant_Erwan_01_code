@@ -28,8 +28,8 @@ public class PersonController {
                                                      @PathVariable("lastName") final String lastName) {
         log.info("get person by firstname (" + firstName + ") and lastname (" + lastName + ")");
         try {
-            personService.personToPersonDto(personService.getPersonByFirstNameAndLastName(firstName, lastName));
-            return ResponseEntity.ok().build();
+            PersonDto personDto = personService.personToPersonDto(personService.getPersonByFirstNameAndLastName(firstName, lastName));
+            return ResponseEntity.ok(personDto);
         } catch (NoSuchElementException e) {
             log.error("GET /person error:{}",e.getMessage());
             return ResponseEntity.notFound().build();
@@ -62,17 +62,17 @@ public class PersonController {
     }
 
     @PutMapping("")
-    public ResponseEntity<?> updatePerson(@RequestBody PersonDto personDto) {
-        log.info("update person with firstname (" + personDto.getFirstName() + ") and lastname (" + personDto.getLastName() + ")");
+    public ResponseEntity<?> updatePerson(@RequestBody PersonDto personDtoIn) {
+        log.info("update person with firstname (" + personDtoIn.getFirstName() + ") and lastname (" + personDtoIn.getLastName() + ")");
         try {
-            personService.personToPersonDto(personService.updatePerson(personDto.getFirstName(),
-                    personDto.getLastName(),
-                    personDto.getAddress(),
-                    personDto.getCity(),
-                    personDto.getZip(),
-                    personDto.getPhone(),
-                    personDto.getEmail()));
-            return ResponseEntity.ok().build();
+            PersonDto personDtoOut = personService.personToPersonDto(personService.updatePerson(personDtoIn.getFirstName(),
+                    personDtoIn.getLastName(),
+                    personDtoIn.getAddress(),
+                    personDtoIn.getCity(),
+                    personDtoIn.getZip(),
+                    personDtoIn.getPhone(),
+                    personDtoIn.getEmail()));
+            return ResponseEntity.ok(personDtoOut);
         } catch (NoSuchElementException e) {
             log.error("PUT /person error:{}",e.getMessage());
             return ResponseEntity.notFound().build();

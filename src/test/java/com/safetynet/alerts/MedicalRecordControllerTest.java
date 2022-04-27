@@ -22,8 +22,8 @@ public class MedicalRecordControllerTest {
     MedicalRecordService medicalRecordService;
 
     static final String endpointTest = "/medicalRecord/";
+    static final String endpointForGetTest = "/medicalRecord/Sophia,Zemicks";
     static final String endpointForDeleteTest = "/medicalRecord?firstName=John&lastName=Boyd";
-    static final String endpointForDeleteKoTest = "/medicalRecord?firstName=John&lastName=BoydTest";
     static final String contentTest = " { \"firstName\":\"John\", \n" +
             " \"lastName\":\"Boyd\", \n" +
             " \"birthdate\":\"03/06/1984\", \n" +
@@ -35,6 +35,11 @@ public class MedicalRecordControllerTest {
             " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
             " \"allergies\":[\"nillacilan\"] }";
 
+    @Test
+    public void getMedicalRecordByFirstNameAndLastNameTest() throws Exception {
+        mockMvc.perform(get(endpointForGetTest))
+                .andExpect(status().isOk());
+    }
 
     @Test
     public void postMedicalRecordOkTest() throws Exception {

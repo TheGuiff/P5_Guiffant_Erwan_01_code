@@ -36,6 +36,17 @@ public class MedicalRecordRepositoryTest {
     }
 
     @Test
+    public void medicalRecordByFirstNameAndLastNameTestOk () {
+        Assertions.assertTrue(medicalRecordRepository.findById(personRepository.getListPersons().get(0).getFirstName(),
+                personRepository.getListPersons().get(0).getLastName()).isPresent());
+    }
+
+    @Test
+    public void medicalRecordByFirstNameAndLastNameTestKo () {
+        Assertions.assertFalse(medicalRecordRepository.findById("Test","TestKO").isPresent());
+    }
+
+    @Test
     public void deleteMedicalRecordTest () {
         numberOfPersonsBeforeTest = personRepository.getListPersons().size();
         medicalRecordRepository.delete(personRepository.getListPersons().get(0).getFirstName(),

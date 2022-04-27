@@ -15,9 +15,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -46,6 +50,7 @@ public class MedicalRecordServiceTest {
     static List<Person> listPerson = new ArrayList<>();
     static List<String> listMedications = new ArrayList<>();
     static List<String> listAllergies = new ArrayList<>();
+    static MedicalRecordDto medicalRecordTest = new MedicalRecordDto();
 
     @BeforeAll
     static void listOfPersonsTest () {
@@ -59,6 +64,38 @@ public class MedicalRecordServiceTest {
         personTest2.setMedications(listMedications);
         listPerson.add(personTest1);
         listPerson.add(personTest2);
+        medicalRecordTest.setFirstName(firsNameTest);
+        medicalRecordTest.setLastName(lastNameTest1);
+        medicalRecordTest.setBirthdate(birthdateTest1);
+        medicalRecordTest.setMedications(listMedications);
+        medicalRecordTest.setAllergies(listAllergies);
+    }
+
+    @Test
+    public void getMedicalRecordByFirstNameAndLastNameTestOk () {
+        //Given
+        try {
+            when(medicalRecordRepository.findById(firsNameTest, lastNameTest1)).thenReturn(Optional.of(medicalRecordTest));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        //WHEN
+        MedicalRecordDto medicalRecordDto = medicalRecordService.getMedicalRecordByFirstNameAndLastName(firsNameTest, lastNameTest1);
+        //THEN
+        assertEquals(firsNameTest, medicalRecordDto.getFirstName());
+        assertEquals(lastNameTest1,medicalRecordDto.getLastName());
+    }
+
+    @Test
+    public void getMedicalRecordByFirstNameAndLastNameTestKo () {
+        try {
+            when(medicalRecordRepository.findById(firsNameTest, lastNameTest1)).thenReturn(Optional.empty());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        assertThrows(NoSuchElementException.class,()->medicalRecordService.getMedicalRecordByFirstNameAndLastName(firsNameTest, lastNameTest1));
     }
 
     @Test
