@@ -3,7 +3,9 @@ package com.safetynet.alerts;
 import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.domain.service.PersonService;
+import com.safetynet.alerts.web.dto.ListPersonsOfAFireStationDto;
 import com.safetynet.alerts.web.dto.PersonDto;
+import com.safetynet.alerts.web.dto.PersonsCoveredByAFireStationDto;
 import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,20 +41,26 @@ public class PersonServiceTest {
     static final String firsNameTest = "Test";
     static final String lastNameTest1 = "Test1";
     static final String lastNameTest2 = "Test2";
+    static final String lastNameTest3 = "Test3;";
     static final String addressTest1 = "address1";
     static final String addressTest2 = "address2";
     static final String cityTest = "city";
     static final String zipTest = "zip";
     static final String phoneTest = "phone";
     static final String emailTest = "email";
-    static final Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest1, cityTest, zipTest, phoneTest, emailTest);
-    static final Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest2, cityTest, zipTest, phoneTest, emailTest);
+    static Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest1, cityTest, zipTest, phoneTest, emailTest);
+    static Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest2, cityTest, zipTest, phoneTest, emailTest);
+    static Person personTest3 = new Person(firsNameTest,lastNameTest3,addressTest2, cityTest, zipTest, phoneTest, emailTest);
     static List<Person> listPerson = new ArrayList<>();
 
     @BeforeAll
     static void listOfPersonsTest () {
+        personTest1.setBirthdate(LocalDate.ofYearDay(LocalDate.now().getYear() - 51,1).format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        personTest2.setBirthdate(LocalDate.ofYearDay(LocalDate.now().getYear() - 8,1).format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        personTest3.setBirthdate(LocalDate.ofYearDay(LocalDate.now().getYear() - 35,1).format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         listPerson.add(personTest1);
         listPerson.add(personTest2);
+        listPerson.add(personTest3);
     }
 
     @Test
@@ -65,7 +75,7 @@ public class PersonServiceTest {
         //WHEN
         List<Person> listPerson = personService.getListPersons();
         //THEN
-        assertEquals(2,listPerson.size());
+        assertEquals(3,listPerson.size());
     }
 
     @Test
@@ -132,13 +142,13 @@ public class PersonServiceTest {
     @Test
     public void listPersonToPersonDtoTest() {
         List<PersonDto> personDtoList = personService.listPersonToPersonDto(listPerson);
-        assertEquals(2, personDtoList.size());
+        assertEquals(3, personDtoList.size());
     }
 
     @Test
     public void listPersonToPhoneAlertDtoTest() {
         PhoneAlertDto phoneAlertDto = personService.listPersonToPhoneAlertDto(listPerson);
-        assertEquals(2,phoneAlertDto.getListPhones().size());
+        assertEquals(3,phoneAlertDto.getListPhones().size());
         assertTrue(phoneAlertDto.getListPhones().contains(listPerson.get(0).getPhone()));
         assertTrue(phoneAlertDto.getListPhones().contains(listPerson.get(1).getPhone()));
     }
@@ -151,6 +161,14 @@ public class PersonServiceTest {
         List<Person> personList = personService.listPersonsByListAddresses(listAddresses);
         assertEquals(1,personList.size());
         assertEquals(addressTest1,personList.get(0).getAddress());
+    }
+
+    @Test
+    public void ListPersonsOfAFireStationDtoTest () {
+        ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = personService.listPersonsByAFireSation(listPerson);
+        assertEquals(3, listPersonsOfAFireStationDto.getPersonsCovered().size());
+        assertEquals(1,listPersonsOfAFireStationDto.getNumberOfChilds());
+        assertEquals(2,listPersonsOfAFireStationDto.getNumberOfAdults());
     }
 
 }

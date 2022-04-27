@@ -1,7 +1,10 @@
 package com.safetynet.alerts.web.controller;
 
+import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.FireStationDto;
 import com.safetynet.alerts.domain.service.FireStationService;
+import com.safetynet.alerts.web.dto.ListPersonsOfAFireStationDto;
+import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +21,8 @@ public class FireStationController {
     @Autowired
     FireStationService fireStationService;
 
-    @GetMapping("")
-    public List<FireStationDto> getFireStations() {
-        return fireStationService.listFireStationToFireStationDto(fireStationService.getFireStations());
-    }
+    @Autowired
+    PersonService personService;
 
     @GetMapping("/{station}")
     public ResponseEntity<?> getFireStation (@PathVariable("station") final int station) {
@@ -31,6 +32,19 @@ public class FireStationController {
             return ResponseEntity.ok(fireStationDto);
         } catch (NoSuchElementException e) {
             log.error("GET /firestation error:{}",e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> personsByFireStation(@RequestParam("stationNumber") int station) {
+        try {
+            ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = personService
+                    .listPersonsByAFireSation(personService
+                            .listPersonsByListAddresses(fireStationService.listAddressesByStation(station)));
+            return ResponseEntity.ok(listPersonsOfAFireStationDto);
+        } catch (NoSuchElementException e) {
+            log.error("GET /list persons covered by a firestation error:{}",e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }

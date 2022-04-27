@@ -2,7 +2,9 @@ package com.safetynet.alerts.domain.service;
 
 import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
+import com.safetynet.alerts.web.dto.ListPersonsOfAFireStationDto;
 import com.safetynet.alerts.web.dto.PersonDto;
+import com.safetynet.alerts.web.dto.PersonsCoveredByAFireStationDto;
 import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,24 @@ public class PersonService {
         return personRepository.getListPersons().stream()
                 .filter(person -> addresses.contains(person.getAddress()))
                 .collect(Collectors.toList());
+    }
+
+    public ListPersonsOfAFireStationDto listPersonsByAFireSation(List<Person> personList) {
+        ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = new ListPersonsOfAFireStationDto();
+        listPersonsOfAFireStationDto.setNumberOfAdults(personList.stream()
+                .filter(p -> p.getAge() > 18)
+                .count());
+        listPersonsOfAFireStationDto.setNumberOfChilds(personList.size()-listPersonsOfAFireStationDto.getNumberOfAdults());
+        listPersonsOfAFireStationDto.setPersonsCovered(personList.stream()
+                .map(person -> {
+                PersonsCoveredByAFireStationDto personsCoveredByAFireStationDto = new PersonsCoveredByAFireStationDto();
+                personsCoveredByAFireStationDto.setFirstName(person.getFirstName());
+                personsCoveredByAFireStationDto.setLastName(person.getLastName());
+                personsCoveredByAFireStationDto.setAddress(person.getAddress());
+                personsCoveredByAFireStationDto.setPhone(person.getPhone());
+                return personsCoveredByAFireStationDto;})
+                .collect(Collectors.toList()));
+        return listPersonsOfAFireStationDto;
     }
 
 }
