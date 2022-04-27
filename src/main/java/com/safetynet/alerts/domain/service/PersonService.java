@@ -2,13 +2,11 @@ package com.safetynet.alerts.domain.service;
 
 import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
-import com.safetynet.alerts.web.dto.ListPersonsOfAFireStationDto;
-import com.safetynet.alerts.web.dto.PersonDto;
-import com.safetynet.alerts.web.dto.PersonsCoveredByAFireStationDto;
-import com.safetynet.alerts.web.dto.PhoneAlertDto;
+import com.safetynet.alerts.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -97,4 +95,28 @@ public class PersonService {
         return listPersonsOfAFireStationDto;
     }
 
+    public ChildAlertDto childAlert(List<Person> listPerson) {
+        ChildAlertDto childAlertDto = new ChildAlertDto();
+        childAlertDto.setListChildren(listPerson.stream()
+                .filter(person -> person.getAge()<=18)
+                .map(person -> {
+                    ChildAlertMemberDto childAlertMemberDto = new ChildAlertMemberDto();
+                    childAlertMemberDto.setFirstName(person.getFirstName());
+                    childAlertMemberDto.setLastName(person.getLastName());
+                    childAlertMemberDto.setAge(person.getAge());
+                    return childAlertMemberDto;
+                })
+                .collect(Collectors.toList()));
+        childAlertDto.setListAdults(listPerson.stream()
+                .filter(person -> person.getAge()>18)
+                .map(person -> {
+                    ChildAlertMemberDto childAlertMemberDto = new ChildAlertMemberDto();
+                    childAlertMemberDto.setFirstName(person.getFirstName());
+                    childAlertMemberDto.setLastName(person.getLastName());
+                    childAlertMemberDto.setAge(person.getAge());
+                    return childAlertMemberDto;
+                })
+                .collect(Collectors.toList()));
+        return childAlertDto;
+    }
 }

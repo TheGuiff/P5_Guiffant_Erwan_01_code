@@ -3,10 +3,7 @@ package com.safetynet.alerts;
 import com.safetynet.alerts.dal.repository.PersonRepository;
 import com.safetynet.alerts.domain.model.Person;
 import com.safetynet.alerts.domain.service.PersonService;
-import com.safetynet.alerts.web.dto.ListPersonsOfAFireStationDto;
-import com.safetynet.alerts.web.dto.PersonDto;
-import com.safetynet.alerts.web.dto.PersonsCoveredByAFireStationDto;
-import com.safetynet.alerts.web.dto.PhoneAlertDto;
+import com.safetynet.alerts.web.dto.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -164,11 +161,25 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void ListPersonsOfAFireStationDtoTest () {
+    public void listPersonsOfAFireStationDtoTest () {
         ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = personService.listPersonsByAFireSation(listPerson);
         assertEquals(3, listPersonsOfAFireStationDto.getPersonsCovered().size());
         assertEquals(1,listPersonsOfAFireStationDto.getNumberOfChilds());
         assertEquals(2,listPersonsOfAFireStationDto.getNumberOfAdults());
+    }
+
+    @Test
+    public void childAlertTest() {
+        ChildAlertDto childAlertDto = personService.childAlert(listPerson);
+        assertEquals(1, childAlertDto.getListChildren().size());
+        assertEquals(2, childAlertDto.getListAdults().size());
+    }
+
+    @Test
+    public void childAlertTestKo() {
+        ChildAlertDto childAlertDto = personService.childAlert(new ArrayList<>());
+        assertEquals(0, childAlertDto.getListChildren().size());
+        assertEquals(0, childAlertDto.getListAdults().size());
     }
 
 }
