@@ -3,6 +3,9 @@ package com.safetynet.alerts.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -34,6 +37,12 @@ public class Person {
         this.setZip(zipIn);
         this.setPhone(phoneIn);
         this.setEmail(emailIn);
+    }
+
+    public int getAge() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate birtDate = LocalDate.parse(this.getBirthdate(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        return Period.between(birtDate, currentDate).getYears();
     }
 
 }
