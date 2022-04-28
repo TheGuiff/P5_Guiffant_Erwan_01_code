@@ -59,4 +59,13 @@ public class FireStationService {
         return optionalFireStation.get().getAddresses();
     }
 
+    public int fireStationByAddress (String address) {
+        Optional<Integer> optionalStation = fireStationRepository.getListFireStations().stream()
+                .filter(fireStation -> fireStation.getAddresses().contains(address))
+                .map(FireStation::getStation)
+                .findFirst();
+        optionalStation.orElseThrow(() -> new NoSuchElementException("No firestation for this address"));
+        return optionalStation.get();
+    }
+
 }

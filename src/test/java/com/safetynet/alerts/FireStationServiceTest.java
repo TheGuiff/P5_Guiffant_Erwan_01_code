@@ -39,10 +39,12 @@ public class FireStationServiceTest {
 
     @BeforeAll
     static void listOfFireStationTest() {
-        List<String> listAddress = new ArrayList<>();
-        listAddress.add(addressTest1);
-        listFireStationTest.add(new FireStation(stationTest1,listAddress));
-        listFireStationTest.add(new FireStation(stationTest2,listAddress));
+        List<String> listAddress1 = new ArrayList<>();
+        listAddress1.add(addressTest1);
+        List<String> listAddress2 = new ArrayList<>();
+        listAddress2.add(addressTest2);
+        listFireStationTest.add(new FireStation(stationTest1,listAddress1));
+        listFireStationTest.add(new FireStation(stationTest2,listAddress2));
     }
 
     @Test
@@ -140,6 +142,28 @@ public class FireStationServiceTest {
             throw  new RuntimeException("Failed to set up test mock objects");
         }
         assertThrows(NoSuchElementException.class,() -> fireStationService.listAddressesByStation(stationTestKo));
+    }
+
+    @Test
+    public void fireStationByAddressTest() {
+        try {
+            when(fireStationRepository.getListFireStations()).thenReturn(listFireStationTest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        int station = fireStationService.fireStationByAddress(addressTest2);
+        assertEquals(2, station);
+    }
+    @Test
+    public void fireStationByAddressTestKo() {
+        try {
+            when(fireStationRepository.getListFireStations()).thenReturn(listFireStationTest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        assertThrows(NoSuchElementException.class,() -> fireStationService.fireStationByAddress(addressTest2+"KO"));
     }
 
 
