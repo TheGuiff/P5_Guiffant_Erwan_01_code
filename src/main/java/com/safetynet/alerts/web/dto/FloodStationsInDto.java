@@ -7,9 +7,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ListFireDto {
+public class FloodStationsInDto {
 
-    private int station;
-    private List<FireAndFloodDto> inhabitantsList;
+    List<Integer> stations;
 
 }

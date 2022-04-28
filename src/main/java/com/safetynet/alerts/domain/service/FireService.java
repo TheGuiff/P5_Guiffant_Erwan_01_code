@@ -1,7 +1,7 @@
 package com.safetynet.alerts.domain.service;
 
 import com.safetynet.alerts.dal.repository.PersonRepository;
-import com.safetynet.alerts.web.dto.FireDto;
+import com.safetynet.alerts.web.dto.FireAndFloodDto;
 import com.safetynet.alerts.web.dto.ListFireDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class FireService {
         ListFireDto listFireDto = new ListFireDto();
         station = fireStationService.fireStationByAddress(address);
         listFireDto.setStation(station);
-        List<FireDto> inhabitantsList = personRepository.getListPersons().stream()
+        List<FireAndFloodDto> inhabitantsList = personRepository.getListPersons().stream()
                 .filter(person -> Objects.equals(person.getAddress(), address))
-                .map(FireDto::new)
+                .map(FireAndFloodDto::new)
                 .collect(Collectors.toList());
         listFireDto.setInhabitantsList(inhabitantsList);
         return listFireDto;
