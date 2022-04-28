@@ -9,6 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,5 +34,17 @@ public class PhoneAlertControllerTest {
     public void phoneAlertTest() throws Exception {
         mockMvc.perform(get("/phoneAlert?firestation=1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void phoneAlertTestKo() throws Exception {
+        try {
+            when(personService.listPersonToPhoneAlertDto(any())).thenThrow(NoSuchElementException.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to set up test mock objects");
+        }
+        mockMvc.perform(get("/phoneAlert?firestation=2"))
+                .andExpect(status().isNotFound());
     }
 }

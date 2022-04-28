@@ -9,6 +9,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.NoSuchElementException;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,7 +30,6 @@ public class FireStationControllerTest {
 
     static final String endpointTest = "/firestation?stationNumber=3";
     static final String endpointTestForGet = "/firestation/1";
-    static final String endpointTestForGetKo = "/firestation/8";
     static final String endpointForDelete = "/firestation/2";
     static final String endpointForDeleteAddress = "/firestation?address=\"1509 Culver St\"";
     static final String endpointTestMappingFireStationAddress = "/firestation?station=1&address=\"address test\"";
@@ -38,9 +41,33 @@ public class FireStationControllerTest {
     }
 
     @Test
+    public void personByFireStationTestKo() throws Exception {
+        try {
+            when(personService.listPersonsByAFireSation(any())).thenThrow(NoSuchElementException.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to set up test mock objects");
+        }
+        mockMvc.perform(get(endpointTest))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void getFireStationTest() throws Exception {
         mockMvc.perform(get(endpointTestForGet))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getFireStationTestKo() throws Exception {
+        try {
+            when(fireStationService.fireStationToFireStationDto(any())).thenThrow(NoSuchElementException.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to set up test mock objects");
+        }
+        mockMvc.perform(get(endpointTestForGet))
+                .andExpect(status().isNotFound());
     }
 
     @Test
