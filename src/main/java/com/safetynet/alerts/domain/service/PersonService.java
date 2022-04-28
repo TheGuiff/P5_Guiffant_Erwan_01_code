@@ -6,9 +6,9 @@ import com.safetynet.alerts.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -119,4 +119,15 @@ public class PersonService {
                 .collect(Collectors.toList()));
         return childAlertDto;
     }
+
+    public CommunityEmailDto communityEmail (String city) {
+        List<String> listEmail =  personRepository.getListPersons().stream()
+                .filter(person -> Objects.equals(person.getCity(), city))
+                .map(Person::getEmail)
+                .collect(Collectors.toList());
+        CommunityEmailDto communityEmailDto = new CommunityEmailDto();
+        communityEmailDto.setListEmail(listEmail);
+        return communityEmailDto;
+    }
+
 }

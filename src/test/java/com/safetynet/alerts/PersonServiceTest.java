@@ -41,30 +41,33 @@ public class PersonServiceTest {
     static final String lastNameTest3 = "Test3;";
     static final String addressTest1 = "address1";
     static final String addressTest2 = "address2";
-    static final String cityTest = "city";
+    static final String cityTest1 = "city1";
+    static final String cityTest2 = "city2";
     static final String zipTest = "zip";
     static final String phoneTest = "phone";
-    static final String emailTest = "email";
-    static Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest1, cityTest, zipTest, phoneTest, emailTest);
-    static Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest2, cityTest, zipTest, phoneTest, emailTest);
-    static Person personTest3 = new Person(firsNameTest,lastNameTest3,addressTest2, cityTest, zipTest, phoneTest, emailTest);
-    static List<Person> listPerson = new ArrayList<>();
+    static final String emailTest1 = "email1";
+    static final String emailTest2 = "email2";
+    static final String emailTest3 = "email3";
+    static Person personTest1 = new Person(firsNameTest,lastNameTest1,addressTest1, cityTest1, zipTest, phoneTest, emailTest1);
+    static Person personTest2 = new Person(firsNameTest,lastNameTest2,addressTest2, cityTest2, zipTest, phoneTest, emailTest2);
+    static Person personTest3 = new Person(firsNameTest,lastNameTest3,addressTest2, cityTest2, zipTest, phoneTest, emailTest3);
+    static List<Person> listPersonTest = new ArrayList<>();
 
     @BeforeAll
     static void listOfPersonsTest () {
         personTest1.setBirthdate(LocalDate.ofYearDay(LocalDate.now().getYear() - 51,1).format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         personTest2.setBirthdate(LocalDate.ofYearDay(LocalDate.now().getYear() - 8,1).format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         personTest3.setBirthdate(LocalDate.ofYearDay(LocalDate.now().getYear() - 35,1).format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-        listPerson.add(personTest1);
-        listPerson.add(personTest2);
-        listPerson.add(personTest3);
+        listPersonTest.add(personTest1);
+        listPersonTest.add(personTest2);
+        listPersonTest.add(personTest3);
     }
 
     @Test
     public void getListPersonTest () {
         //Given
         try {
-            when(personRepository.findAll()).thenReturn(listPerson);
+            when(personRepository.findAll()).thenReturn(listPersonTest);
         } catch (Exception e) {
             e.printStackTrace();
             throw  new RuntimeException("Failed to set up test mock objects");
@@ -112,13 +115,13 @@ public class PersonServiceTest {
 
     @Test
     public void addPersonTest () {
-        personService.addPerson(firsNameTest, lastNameTest1, addressTest1, cityTest, zipTest, phoneTest, emailTest);
+        personService.addPerson(firsNameTest, lastNameTest1, addressTest1, cityTest1, zipTest, phoneTest, emailTest1);
         verify(personRepository, Mockito.times(1)).save(any(Person.class));
     }
 
     @Test
     public void updatePersonTest () {
-        personService.updatePerson(firsNameTest, lastNameTest1, addressTest1, cityTest, zipTest, phoneTest, emailTest);
+        personService.updatePerson(firsNameTest, lastNameTest1, addressTest1, cityTest1, zipTest, phoneTest, emailTest1);
         verify(personRepository, Mockito.times(1)).update(any(Person.class));
     }
 
@@ -138,23 +141,23 @@ public class PersonServiceTest {
 
     @Test
     public void listPersonToPersonDtoTest() {
-        List<PersonDto> personDtoList = personService.listPersonToPersonDto(listPerson);
+        List<PersonDto> personDtoList = personService.listPersonToPersonDto(listPersonTest);
         assertEquals(3, personDtoList.size());
     }
 
     @Test
     public void listPersonToPhoneAlertDtoTest() {
-        PhoneAlertDto phoneAlertDto = personService.listPersonToPhoneAlertDto(listPerson);
+        PhoneAlertDto phoneAlertDto = personService.listPersonToPhoneAlertDto(listPersonTest);
         assertEquals(3,phoneAlertDto.getListPhones().size());
-        assertTrue(phoneAlertDto.getListPhones().contains(listPerson.get(0).getPhone()));
-        assertTrue(phoneAlertDto.getListPhones().contains(listPerson.get(1).getPhone()));
+        assertTrue(phoneAlertDto.getListPhones().contains(listPersonTest.get(0).getPhone()));
+        assertTrue(phoneAlertDto.getListPhones().contains(listPersonTest.get(1).getPhone()));
     }
 
     @Test
     public void listPersonsByListAddressesTest() {
         List<String> listAddresses = new ArrayList<>();
         listAddresses.add(addressTest1);
-        when(personRepository.getListPersons()).thenReturn(listPerson);
+        when(personRepository.getListPersons()).thenReturn(listPersonTest);
         List<Person> personList = personService.listPersonsByListAddresses(listAddresses);
         assertEquals(1,personList.size());
         assertEquals(addressTest1,personList.get(0).getAddress());
@@ -162,7 +165,7 @@ public class PersonServiceTest {
 
     @Test
     public void listPersonsOfAFireStationDtoTest () {
-        ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = personService.listPersonsByAFireSation(listPerson);
+        ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = personService.listPersonsByAFireSation(listPersonTest);
         assertEquals(3, listPersonsOfAFireStationDto.getPersonsCovered().size());
         assertEquals(1,listPersonsOfAFireStationDto.getNumberOfChilds());
         assertEquals(2,listPersonsOfAFireStationDto.getNumberOfAdults());
@@ -170,7 +173,7 @@ public class PersonServiceTest {
 
     @Test
     public void childAlertTest() {
-        ChildAlertDto childAlertDto = personService.childAlert(listPerson);
+        ChildAlertDto childAlertDto = personService.childAlert(listPersonTest);
         assertEquals(1, childAlertDto.getListChildren().size());
         assertEquals(2, childAlertDto.getListAdults().size());
     }
@@ -182,4 +185,17 @@ public class PersonServiceTest {
         assertEquals(0, childAlertDto.getListAdults().size());
     }
 
+    @Test
+    public void communityEmailTest () {
+        try {
+            when(personRepository.getListPersons()).thenReturn(listPersonTest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException("Failed to set up test mock objects");
+        }
+        CommunityEmailDto communityEmailDto = personService.communityEmail(cityTest2);
+        assertEquals(2, communityEmailDto.getListEmail().size());
+        assertTrue(communityEmailDto.getListEmail().contains(emailTest2));
+        assertTrue(communityEmailDto.getListEmail().contains(emailTest3));
+    }
 }
