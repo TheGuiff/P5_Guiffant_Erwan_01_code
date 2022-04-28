@@ -7,9 +7,9 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ListFireDto {
+public class FireAndFloodByAddressDto {
 
-    private int station;
+    private String address;
     private List<FireAndFloodDto> inhabitantsList;
 
 }

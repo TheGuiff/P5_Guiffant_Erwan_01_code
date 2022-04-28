@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FireDto {
+public class FireAndFloodDto {
 
     private String firstName;
     private String lastName;
@@ -17,7 +17,7 @@ public class FireDto {
     private List<String> medications;
     private List<String> allergies;
 
-    public FireDto (Person person) {
+    public FireAndFloodDto(Person person) {
         this.setFirstName(person.getFirstName());
         this.setLastName(person.getLastName());
         this.setPhone(person.getPhone());
