@@ -22,6 +22,7 @@ public class ChildAlertController {
 
     @GetMapping("")
     public ChildAlertDto getListOfChildrenByAddress(@RequestParam("address") String address) {
+        log.info("ChilAlert on address {}", address);
         List<String> listAddress = new ArrayList<>();
         listAddress.add(address);
         return personService.childAlert(personService.listPersonsByListAddresses(listAddress));

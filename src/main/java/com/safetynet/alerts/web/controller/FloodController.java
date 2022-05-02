@@ -21,6 +21,7 @@ public class FloodController {
 
     @GetMapping("/stations")
     public ResponseEntity<?> personInfo(@RequestBody FloodStationsInDto stationsIn) {
+        log.info("Flood - infos on inhabitants depending on firestation {}", stationsIn);
         try {
             List<FireAndFloodByStationDto> fireAndFloodByStationDtos = floodService.flood(stationsIn.getStations());
             return ResponseEntity.ok(fireAndFloodByStationDtos);

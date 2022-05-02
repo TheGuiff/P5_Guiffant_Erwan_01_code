@@ -23,6 +23,7 @@ public class PersonInfoController {
     @GetMapping("")
     public ResponseEntity<?> personInfo(@RequestParam("firstName") String firstName,
                                         @RequestParam("lastName") String lastName) {
+        log.info("personInfo on {}, {}", firstName, lastName );
         try {
             PersonInfoDto personInfoDto = personInfoService.personInfo(firstName, lastName);
             return ResponseEntity.ok(personInfoDto);

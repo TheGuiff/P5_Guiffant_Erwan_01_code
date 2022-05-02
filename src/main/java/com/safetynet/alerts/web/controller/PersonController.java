@@ -20,13 +20,14 @@ public class PersonController {
 
     @GetMapping("")
     public List<PersonDto> getListPersons() {
+        log.info("Get list of persons");
         return personService.listPersonToPersonDto(personService.getListPersons());
     }
 
     @GetMapping("/{firstName},{lastName}")
     public ResponseEntity<?> getPersonByFirstNameAndLastName(@PathVariable("firstName") final String firstName,
                                                      @PathVariable("lastName") final String lastName) {
-        log.info("get person by firstname (" + firstName + ") and lastname (" + lastName + ")");
+        log.info("get person : {}, {}",firstName,lastName);
         try {
             PersonDto personDto = personService.personToPersonDto(personService.getPersonByFirstNameAndLastName(firstName, lastName));
             return ResponseEntity.ok(personDto);
@@ -39,7 +40,7 @@ public class PersonController {
     @DeleteMapping("") //Idem au-dessus
     public ResponseEntity<?> deletePerson(@RequestParam("firstName") final String firstName,
                                        @RequestParam("lastName") final String lastName) {
-        log.info("delete person by firstname (" + firstName + ") and lastname (" + lastName + ")");
+        log.info("delete person : {}, {}",firstName,lastName);
         try {
             personService.deletePerson(firstName, lastName);
             return ResponseEntity.ok().build();
@@ -51,7 +52,7 @@ public class PersonController {
 
     @PostMapping("")
     public PersonDto addPerson(@RequestBody PersonDto personDto) {
-        log.info("save person with firstname (" + personDto.getFirstName() + ") and lastname (" + personDto.getLastName() + ")");
+        log.info("save person : {}, {}",personDto.getFirstName(),personDto.getLastName());
         return personService.personToPersonDto(personService.addPerson(personDto.getFirstName(),
                     personDto.getLastName(),
                     personDto.getAddress(),
@@ -63,7 +64,7 @@ public class PersonController {
 
     @PutMapping("")
     public ResponseEntity<?> updatePerson(@RequestBody PersonDto personDtoIn) {
-        log.info("update person with firstname (" + personDtoIn.getFirstName() + ") and lastname (" + personDtoIn.getLastName() + ")");
+        log.info("update person : {}, {}",personDtoIn.getFirstName(),personDtoIn.getLastName());
         try {
             PersonDto personDtoOut = personService.personToPersonDto(personService.updatePerson(personDtoIn.getFirstName(),
                     personDtoIn.getLastName(),

@@ -22,6 +22,7 @@ public class FireController {
 
     @GetMapping("")
     public ResponseEntity<?> personInfo(@RequestParam("address") String address) {
+        log.info("List of inhabitants at address : {}", address);
         try {
             ListFireDto listFireDto = fireService.fire(address);
             return ResponseEntity.ok(listFireDto);

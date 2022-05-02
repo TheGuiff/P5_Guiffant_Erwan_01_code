@@ -21,7 +21,7 @@ public class MedicalRecordController {
     @GetMapping("/{firstName},{lastName}")
     public ResponseEntity<?> getMedicalRecordByFirstNameAndLastName(@PathVariable("firstName") final String firstName,
                                                              @PathVariable("lastName") final String lastName) {
-        log.info("get medical record by firstname (" + firstName + ") and lastname (" + lastName + ")");
+        log.info("get medical record by firstname ({}) and lastname ({})", firstName, lastName);
         try {
             MedicalRecordDto medicalRecordDto = medicalRecordService.getMedicalRecordByFirstNameAndLastName(firstName, lastName);
             return ResponseEntity.ok(medicalRecordDto);
@@ -33,7 +33,7 @@ public class MedicalRecordController {
 
     @PostMapping("")
     public ResponseEntity<?> addMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDtoIn) {
-        log.info("add medical record for " + medicalRecordDtoIn.getFirstName() + " " + medicalRecordDtoIn.getLastName());
+        log.info("add medical record for {}, {}",medicalRecordDtoIn.getFirstName(),medicalRecordDtoIn.getLastName());
         try {
             MedicalRecordDto medicalRecordDtoOut = medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDtoIn.getFirstName(),
                     medicalRecordDtoIn.getLastName(),
@@ -49,7 +49,7 @@ public class MedicalRecordController {
 
     @PutMapping("")
     public ResponseEntity<?> updateMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDtoIn) {
-        log.info("update medical record for "+ medicalRecordDtoIn.getFirstName() + " " + medicalRecordDtoIn.getLastName());
+        log.info("update medical record for {}, {}",medicalRecordDtoIn.getFirstName(),medicalRecordDtoIn.getLastName());
         try {
              MedicalRecordDto medicalRecordDtoOut = medicalRecordService.personToMedicalRecordDto(medicalRecordService.saveMedicalRecord(medicalRecordDtoIn.getFirstName(),
                     medicalRecordDtoIn.getLastName(),
@@ -66,7 +66,7 @@ public class MedicalRecordController {
     @DeleteMapping("")
     public ResponseEntity<?> deleteMedicalRecord(@RequestParam("firstName") String firstName,
                                     @RequestParam("lastName") String lastName) {
-        log.info("delete medical record for "+ firstName + " " + lastName);
+        log.info("delete medical record for {}, {}",firstName,lastName);
         try {
             medicalRecordService.deleteMedicalRecord(firstName, lastName);
             return ResponseEntity.ok().build();
