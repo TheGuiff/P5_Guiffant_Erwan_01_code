@@ -2,6 +2,7 @@ package com.safetynet.alerts;
 
 import com.safetynet.alerts.domain.service.FireStationService;
 import com.safetynet.alerts.domain.service.PersonService;
+import com.safetynet.alerts.domain.service.PhoneAlertService;
 import com.safetynet.alerts.web.controller.PhoneAlertController;
 import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ public class PhoneAlertControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    PhoneAlertService phoneAlertService;
+
+    @MockBean
     PersonService personService;
 
     @MockBean
@@ -41,7 +45,7 @@ public class PhoneAlertControllerTest {
         phoneAlerts.add("phone");
         phoneAlertDto.setListPhones(phoneAlerts);
         try {
-            when(personService.listPersonToPhoneAlertDto(any())).thenReturn(phoneAlertDto);
+            when(phoneAlertService.listPersonToPhoneAlertDto(any())).thenReturn(phoneAlertDto);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to set up test mock objects");
@@ -53,7 +57,7 @@ public class PhoneAlertControllerTest {
     @Test
     public void phoneAlertTestKo() throws Exception {
         try {
-            when(personService.listPersonToPhoneAlertDto(any())).thenThrow(NoSuchElementException.class);
+            when(phoneAlertService.listPersonToPhoneAlertDto(any())).thenThrow(NoSuchElementException.class);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to set up test mock objects");

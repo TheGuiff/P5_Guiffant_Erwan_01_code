@@ -1,5 +1,6 @@
 package com.safetynet.alerts.web.controller;
 
+import com.safetynet.alerts.domain.service.ChildAlertService;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.ChildAlertDto;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,9 @@ import java.util.List;
 public class ChildAlertController {
 
     @Autowired
+    ChildAlertService childAlertService;
+
+    @Autowired
     PersonService personService;
 
     @GetMapping("")
@@ -25,6 +29,6 @@ public class ChildAlertController {
         log.info("ChilAlert on address {}", address);
         List<String> listAddress = new ArrayList<>();
         listAddress.add(address);
-        return personService.childAlert(personService.listPersonsByListAddresses(listAddress));
+        return childAlertService.childAlert(personService.listPersonsByListAddresses(listAddress));
     }
 }

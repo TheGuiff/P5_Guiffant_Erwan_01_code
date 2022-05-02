@@ -1,5 +1,6 @@
 package com.safetynet.alerts;
 
+import com.safetynet.alerts.domain.service.ChildAlertService;
 import com.safetynet.alerts.domain.service.FireStationService;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.controller.ChildAlertController;
@@ -27,6 +28,9 @@ public class ChildAlertControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    ChildAlertService childAlertService;
+
+    @MockBean
     PersonService personService;
 
     private static final String addressTest = "/childAlert?address=\"1509 Culver St\"";
@@ -49,7 +53,7 @@ public class ChildAlertControllerTest {
         childAlertDto.setListAdults(listAdults);
         childAlertDto.setListChildren(listChildren);
         try {
-            when(personService.childAlert(any())).thenReturn(childAlertDto);
+            when(childAlertService.childAlert(any())).thenReturn(childAlertDto);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to set up test mock objects");
