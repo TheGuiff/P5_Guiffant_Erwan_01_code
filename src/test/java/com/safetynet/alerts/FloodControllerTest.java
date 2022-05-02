@@ -2,6 +2,7 @@ package com.safetynet.alerts;
 
 import com.safetynet.alerts.domain.service.FloodService;
 import com.safetynet.alerts.web.controller.FloodController;
+import com.safetynet.alerts.web.dto.FireAndFloodByStationDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -9,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -25,9 +28,22 @@ public class FloodControllerTest {
     @MockBean
     FloodService floodService;
 
+    static final String flood = "/flood/stations";
+    static final List<FireAndFloodByStationDto> fireAndFloodByStationDtos = new ArrayList<>();
+    static final FireAndFloodByStationDto fireAndFloodByStationDto = new FireAndFloodByStationDto();
+
     @Test
     public void floodControllerTest() throws Exception {
-        mockMvc.perform(get("/flood/stations")
+        fireAndFloodByStationDto.setStation(1);
+        fireAndFloodByStationDto.setListAddresses(new ArrayList<>());
+        fireAndFloodByStationDtos.add(fireAndFloodByStationDto);
+        try {
+            when(floodService.flood(any())).thenReturn(fireAndFloodByStationDtos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to set up test mock objects");
+        }
+        mockMvc.perform(get(flood)
                         .content("{\"stations\":[1,2]}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -41,7 +57,7 @@ public class FloodControllerTest {
             e.printStackTrace();
             throw new RuntimeException("Failed to set up test mock objects");
         }
-        mockMvc.perform(get("/flood/stations")
+        mockMvc.perform(get(flood)
                         .content("{\"stations\":[1,2]}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
