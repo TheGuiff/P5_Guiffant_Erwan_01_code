@@ -1,5 +1,6 @@
 package com.safetynet.alerts;
 
+import com.safetynet.alerts.domain.service.CommunityEmailService;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.controller.CommunityEmailController;
 import com.safetynet.alerts.web.dto.CommunityEmailDto;
@@ -25,7 +26,7 @@ public class CommunityEmailControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    PersonService personService;
+    CommunityEmailService communityEmailService;
 
     private static final String city = "/communityEmail?city=Culver";
     private static final String emailTest = "email";
@@ -37,7 +38,7 @@ public class CommunityEmailControllerTest {
         listEmails.add(emailTest);
         communityEmailDto.setListEmail(listEmails);
         try {
-            when(personService.communityEmail(any())).thenReturn(communityEmailDto);
+            when(communityEmailService.communityEmail(any())).thenReturn(communityEmailDto);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to set up test mock objects");

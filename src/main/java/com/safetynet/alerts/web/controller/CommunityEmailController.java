@@ -1,5 +1,6 @@
 package com.safetynet.alerts.web.controller;
 
+import com.safetynet.alerts.domain.service.CommunityEmailService;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.CommunityEmailDto;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommunityEmailController {
 
     @Autowired
-    PersonService personService;
+    CommunityEmailService communityEmailService;
 
     @GetMapping("")
     public CommunityEmailDto getListOfEmailsByCity(@RequestParam("city") String city) {
         log.info("Community emails for city : {}", city);
-        return personService.communityEmail(city);
+        return communityEmailService.communityEmail(city);
     }
 }

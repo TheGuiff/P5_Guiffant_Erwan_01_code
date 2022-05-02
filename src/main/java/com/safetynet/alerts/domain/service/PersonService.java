@@ -65,12 +65,6 @@ public class PersonService {
         return listPerson.stream().map(this::personToPersonDto).collect(Collectors.toList());
     }
 
-    public PhoneAlertDto listPersonToPhoneAlertDto(List<Person> listPerson) {
-        PhoneAlertDto phoneAlertDto = new PhoneAlertDto();
-        phoneAlertDto.setListPhones(listPerson.stream().map(Person::getPhone).collect(Collectors.toList()));
-        return phoneAlertDto;
-    }
-
     public List<Person> listPersonsByListAddresses (List<String> addresses) {
         return personRepository.getListPersons().stream()
                 .filter(person -> addresses.contains(person.getAddress()))
@@ -93,41 +87,6 @@ public class PersonService {
                 return personsCoveredByAFireStationDto;})
                 .collect(Collectors.toList()));
         return listPersonsOfAFireStationDto;
-    }
-
-    public ChildAlertDto childAlert(List<Person> listPerson) {
-        ChildAlertDto childAlertDto = new ChildAlertDto();
-        childAlertDto.setListChildren(listPerson.stream()
-                .filter(person -> person.getAge()<=18)
-                .map(person -> {
-                    ChildAlertMemberDto childAlertMemberDto = new ChildAlertMemberDto();
-                    childAlertMemberDto.setFirstName(person.getFirstName());
-                    childAlertMemberDto.setLastName(person.getLastName());
-                    childAlertMemberDto.setAge(person.getAge());
-                    return childAlertMemberDto;
-                })
-                .collect(Collectors.toList()));
-        childAlertDto.setListAdults(listPerson.stream()
-                .filter(person -> person.getAge()>18)
-                .map(person -> {
-                    ChildAlertMemberDto childAlertMemberDto = new ChildAlertMemberDto();
-                    childAlertMemberDto.setFirstName(person.getFirstName());
-                    childAlertMemberDto.setLastName(person.getLastName());
-                    childAlertMemberDto.setAge(person.getAge());
-                    return childAlertMemberDto;
-                })
-                .collect(Collectors.toList()));
-        return childAlertDto;
-    }
-
-    public CommunityEmailDto communityEmail (String city) {
-        List<String> listEmail =  personRepository.getListPersons().stream()
-                .filter(person -> Objects.equals(person.getCity(), city))
-                .map(Person::getEmail)
-                .collect(Collectors.toList());
-        CommunityEmailDto communityEmailDto = new CommunityEmailDto();
-        communityEmailDto.setListEmail(listEmail);
-        return communityEmailDto;
     }
 
 }

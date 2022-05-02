@@ -146,14 +146,6 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void listPersonToPhoneAlertDtoTest() {
-        PhoneAlertDto phoneAlertDto = personService.listPersonToPhoneAlertDto(listPersonTest);
-        assertEquals(3,phoneAlertDto.getListPhones().size());
-        assertTrue(phoneAlertDto.getListPhones().contains(listPersonTest.get(0).getPhone()));
-        assertTrue(phoneAlertDto.getListPhones().contains(listPersonTest.get(1).getPhone()));
-    }
-
-    @Test
     public void listPersonsByListAddressesTest() {
         List<String> listAddresses = new ArrayList<>();
         listAddresses.add(addressTest1);
@@ -171,31 +163,4 @@ public class PersonServiceTest {
         assertEquals(2,listPersonsOfAFireStationDto.getNumberOfAdults());
     }
 
-    @Test
-    public void childAlertTest() {
-        ChildAlertDto childAlertDto = personService.childAlert(listPersonTest);
-        assertEquals(1, childAlertDto.getListChildren().size());
-        assertEquals(2, childAlertDto.getListAdults().size());
-    }
-
-    @Test
-    public void childAlertTestKo() {
-        ChildAlertDto childAlertDto = personService.childAlert(new ArrayList<>());
-        assertEquals(0, childAlertDto.getListChildren().size());
-        assertEquals(0, childAlertDto.getListAdults().size());
-    }
-
-    @Test
-    public void communityEmailTest () {
-        try {
-            when(personRepository.getListPersons()).thenReturn(listPersonTest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
-        }
-        CommunityEmailDto communityEmailDto = personService.communityEmail(cityTest2);
-        assertEquals(2, communityEmailDto.getListEmail().size());
-        assertTrue(communityEmailDto.getListEmail().contains(emailTest2));
-        assertTrue(communityEmailDto.getListEmail().contains(emailTest3));
-    }
 }
