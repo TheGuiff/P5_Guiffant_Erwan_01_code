@@ -20,6 +20,7 @@ public class CommunityEmailController {
 
     @GetMapping("")
     public CommunityEmailDto getListOfEmailsByCity(@RequestParam("city") String city) {
+        log.info("Community emails for city : {}", city);
         return personService.communityEmail(city);
     }
 }

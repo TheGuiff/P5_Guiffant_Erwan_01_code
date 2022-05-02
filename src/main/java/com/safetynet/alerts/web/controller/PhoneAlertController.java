@@ -26,6 +26,7 @@ public class PhoneAlertController {
 
     @GetMapping("")
     public ResponseEntity<?> phoneAlert(@RequestParam("firestation") int station) {
+        log.info("phoneAlert for firestation {}", station);
         try {
             PhoneAlertDto phoneAlertDto = personService.listPersonToPhoneAlertDto(personService.listPersonsByListAddresses(fireStationService.listAddressesByStation(station)));
             return ResponseEntity.ok(phoneAlertDto);

@@ -26,7 +26,7 @@ public class FireStationController {
 
     @GetMapping("/{station}")
     public ResponseEntity<?> getFireStation (@PathVariable("station") final int station) {
-        log.info("get firestation number : " + station);
+        log.info("get firestation number : {}",station);
         try {
             FireStationDto fireStationDto = fireStationService.fireStationToFireStationDto(fireStationService.getFireStation(station));
             return ResponseEntity.ok(fireStationDto);
@@ -38,6 +38,7 @@ public class FireStationController {
 
     @GetMapping("")
     public ResponseEntity<?> personsByFireStation(@RequestParam("stationNumber") int station) {
+        log.info("List of persons depending on firestation n°{}", station);
         try {
             ListPersonsOfAFireStationDto listPersonsOfAFireStationDto = personService
                     .listPersonsByAFireSation(personService
@@ -52,17 +53,20 @@ public class FireStationController {
     @PostMapping("")
     public FireStationDto addMappingFireStationAddress(@RequestParam("station") final int station,
                                                        @RequestParam("address") final String address) {
+        log.info("Add mapping between firestation {} and address {}", station, address);
         return fireStationService.fireStationToFireStationDto(fireStationService.addMappingFiresStationAddress(station, address));
     }
 
     @PutMapping("")
     public FireStationDto updateMappingFireStationAddress (@RequestParam("station") final int station,
                                                            @RequestParam("address") final String address) {
+        log.info("Update mapping between firestation {} and address {}", station, address);
         return fireStationService.fireStationToFireStationDto(fireStationService.updateMappingFireStationAddress(station, address));
     }
 
     @DeleteMapping("/{station}")
     public ResponseEntity<?> deleteMappingStation(@PathVariable("station") final int station) {
+        log.info("Delete mapping firestation {}", station);
         try {
             fireStationService.deleteMappingFireStation(station);
             return ResponseEntity.ok().build();
@@ -74,6 +78,7 @@ public class FireStationController {
 
     @DeleteMapping("")
     public void deleteMappingAddress(@RequestParam("address") final String address) {
+        log.info("Delete mapping address {}", address);
         fireStationService.deleteMappingAddress(address);
     }
 
