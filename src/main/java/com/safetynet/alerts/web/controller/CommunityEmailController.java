@@ -1,7 +1,6 @@
 package com.safetynet.alerts.web.controller;
 
 import com.safetynet.alerts.domain.service.CommunityEmailService;
-import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.CommunityEmailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

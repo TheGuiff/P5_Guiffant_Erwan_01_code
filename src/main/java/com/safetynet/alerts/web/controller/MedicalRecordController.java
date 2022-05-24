@@ -2,7 +2,6 @@ package com.safetynet.alerts.web.controller;
 
 import com.safetynet.alerts.domain.service.MedicalRecordService;
 import com.safetynet.alerts.web.dto.MedicalRecordDto;
-import com.safetynet.alerts.web.dto.PersonDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

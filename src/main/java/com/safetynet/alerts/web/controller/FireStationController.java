@@ -4,13 +4,11 @@ import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.dto.FireStationDto;
 import com.safetynet.alerts.domain.service.FireStationService;
 import com.safetynet.alerts.web.dto.ListPersonsOfAFireStationDto;
-import com.safetynet.alerts.web.dto.PhoneAlertDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController

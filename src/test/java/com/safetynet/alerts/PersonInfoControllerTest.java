@@ -1,7 +1,6 @@
 package com.safetynet.alerts;
 
 import com.safetynet.alerts.domain.service.PersonInfoService;
-import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.controller.PersonInfoController;
 import com.safetynet.alerts.web.dto.PersonInfoDto;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.NoSuchElementException;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
