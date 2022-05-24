@@ -1,7 +1,6 @@
 package com.safetynet.alerts;
 
 import com.safetynet.alerts.domain.service.ChildAlertService;
-import com.safetynet.alerts.domain.service.FireStationService;
 import com.safetynet.alerts.domain.service.PersonService;
 import com.safetynet.alerts.web.controller.ChildAlertController;
 import com.safetynet.alerts.web.dto.ChildAlertDto;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

@@ -37,11 +37,6 @@ public class MedicalRecordControllerTest {
             " \"birthdate\":\"03/06/1984\", \n" +
             " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
             " \"allergies\":[\"nillacilan\"] }";
-    static final String contentKoTest = " { \"firstName\":\"JohnTest\", \n" +
-            " \"lastName\":\"BoydTest\", \n" +
-            " \"birthdate\":\"03/06/1984\", \n" +
-            " \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \n" +
-            " \"allergies\":[\"nillacilan\"] }";
     static final MedicalRecordDto medicalRecordDto = new MedicalRecordDto();
 
     @BeforeAll
